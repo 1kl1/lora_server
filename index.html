@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LoRa Maker Project</title>
+    <link rel="stylesheet" href="data/style.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+        <div id="nav">
+                <img src="data/aperture_official_logo_wtext_white_.png" alt="aperture logo" height="30px">
+            </div>
+        <aside id="left-menu">
+            
+            <h1 style = "color:white;">Menu</h1>
+            <br>
+            <nav>
+                <ul>
+                <li><button class = "button" onclick="graphClick(this.innerText)">1반</button>></li>
+                <li><button class = "button" onclick="graphClick(this.innerText)">2반</button>></li>
+                <li><button class = "button" onclick="graphClick(this.innerText)">3반</button>></li>
+                <li><button class = "button" onclick="graphClick(this.innerText)">4반</button>></li>
+                <li id="products">Extra</li>
+                <li><a href="#chat" style = "color:#b8bad4;">행정실에 연락</a></li>
+                <li><a href="#Bobcontainer">오늘의 급식</a></li>
+                <li><a href="#timerFrame">수능 타이머</a></li>
+                
+                </ul>
+            </nav>
+            
+            <div class="vertical-line"></div>
+            
+            </aside>
+            <script>
+                let prop = document.getElementById('left-menu');
+                window.addEventListener('scroll', function() {
+                        setTimeout(()=>{
+                        prop.style.top = String(window.scrollY)+'px';
+                    },10);
+                });
+            </script>
+
+        
+        <h2 style = " color:#242849;display:inline-block; margin-left:30px;margin-bottom: 10px; ">각 반 공기질 현황</h2>
+        <div style="color:#242849;display:inline-block; width: 80%; margin-left:30px; height:0.5px; border:lightgrey solid 1px; background-color:lightgrey"></div>
+        <div class="weakFont">각 반 공기질 현황 > <b> 온도</b></div>
+
+        <br><br>
+        
+        <div id="graph">
+            <div id = row>
+            <div class = 'smallgraph' id="c1"></div>
+            <div class = 'smallgraph' id="c2"></div>
+            <div class = 'smallgraph' id="c3"></div>
+            <div class = 'smallgraph' id="c4"></div>
+
+            </div>
+        </div>
+    
+<script>
+    setInterval(()=>{smallGraph()},5000)
+
+        function smallGraph(){
+            let req = new XMLHttpRequest();
+            req.open('GET', '/graph/?class=a', true);
+            req.onreadystatechange = function (aEvt) {
+            if (req.readyState === 4) {
+                if(req.status === 200){
+                    let temp1 = [];
+                    let temp2 = [];
+                    let temp3 = [];
+                    let temp4 = [];
+
+                    let time = [];
+                    let flag = 0;
+                    let array = JSON.parse("[" + req.response + "]")[0];
+                    
+                    array.forEach((element,index) => {            
+                        if(element.data_temp<=0||element.data_humid<=0){
+                        }
+                        else{
+                            switch(element.data_num){
+                             case 1:
+                             temp1.push(element.data_temp)
+                                break;
+                             case 2:
+                             temp2.push(element.data_temp)
+                             break;
+                             case 3:
+                             temp3.push(element.data_temp)
+                             break;
+                             case 4:
+                             temp4.push(element.data_temp)
+                             break;                               
+                            }
+                            
+                            time.push(Number(element.timeforme.substr(8,6))) 
+                        }
+                        
+                        if(index == array.length-1){
+                            
+                            flag = 1
+                        }
+                    });
+                     
+                    let temp = setInterval(()=>{
+                        if(flag){
+                            
+                            drawsmallGraph(temp1,temp2,temp3,temp4,time);
+                            
+                            clearInterval(temp)
+                        }
+                        
+                    },100)
+                }
+                else{
+                    console.log("Error loading page\n");
+                }
+            }
+            };
+            req.send(null);
+
+
+            
+            
+        }
+        let classDict = {
+            "c1":"1반",
+            "c2":"2반",
+            "c3":"3반",
+            "c4":"4반"
+        };
+
+        function drawsmallGraph(temp1,temp2,temp3,temp4,time){
+            temporaryGraph(temp1,time,"c1")
+            temporaryGraph(temp2,time,"c2")
+            temporaryGraph(temp3,time,"c3")
+            temporaryGraph(temp4,time,"c4")
+        }
+        function temporaryGraph(d,t,str){
+            
+            let trace = {
+                x: t,
+                y: d,
+                mode: 'area'
+            };
+            let data = [ trace ];
+            let layout = {
+                title:classDict[str],
+                xaxis:{
+                    zeroline: false
+                },
+                yaxis: {
+                    zeroline: false
+                }
+            };
+            Plotly.newPlot(str, data, layout);
+        }
+    
+</script>
+
+    <div id="container">
+        <div class = "containerHeader">
+            <b>대시보드</b>
+        </div>
+        <hr>
+        <div>
+            <div id="graphHeader" class="graphHeader">&lt; 1반 &gt;</div>
+        </div>
+        <hr>
+        <br><br>
+        
+        <div id="graph">
+            <div id = row>
+            <div class = 'graph' id="temp"></div>
+                
+            <div class = 'graph' id="hmd"></div>
+            
+            <div class = 'graph' id="dust"></div>
+            <div class = 'graph' id="pres"></div>
+            
+        </div>
+            
+            
+    </div>
+
+        
+    </div>
+
+
+    <script>
+        drawGraph(document.cookie)
+        setInterval(()=>{drawGraph(document.cookie)},5000)
+
+        function graphClick(cless){
+            document.getElementById('graphHeader').innerText = "< "+cless+" >"
+            document.cookie = cless;
+            drawGraph(document.cookie)
+        }
+        if(document.cookie){
+            document.getElementById('graphHeader').innerText = "< "+document.cookie+" >"
+        }
+
+        
+        function drawGraph(cless){
+            console.log(cless)
+            let req = new XMLHttpRequest();
+            req.open('GET', '/graph/?class='+cless, true);
+            req.onreadystatechange = function (aEvt) {
+            if (req.readyState === 4) {
+                if(req.status === 200){
+                    let dustD = [];
+                    let tempD = [];
+                    let humidD = [];
+                    let time = [];
+                    let presD = [];
+                    
+                    let flag = 0;
+                    let array = JSON.parse("[" + req.response + "]")[0];
+                    
+                    array.forEach((element,index) => {            
+                        if(element.data_temp<=0||element.data_humid<=0){
+                        }
+                        else{
+                            dustD.push(element.data_dust)
+                            tempD.push(element.data_temp)
+                            humidD.push(element.data_humid)
+                            presD.push(element.data_pres)
+                            
+                        
+                        time.push(Number(element.timeforme.substr(8,6))) 
+                        
+
+                        }
+                        
+                        if(index == array.length-1){
+                            
+                            flag = 1
+                        }
+                    });
+                     
+                    let temp = setInterval(()=>{
+                        if(flag){
+                            dustGraph(dustD,time);
+                            tempGraph(tempD,time);
+                            humidGraph(humidD,time);
+                            presGraph(presD,time);
+                            
+                            clearInterval(temp)
+                        }
+                        
+                    },100)
+                }
+                else{
+                    console.log("Error loading page\n");
+                }
+            }
+            };
+            req.send(null);
+
+
+            
+            
+        }
+        function dustGraph(dust_data,time){
+
+            let trace = {
+                x: time,
+                y: dust_data,
+                mode: 'area'
+            };
+            let data = [ trace ];
+            let layout = {
+                title:'먼지'
+            };
+            
+            Plotly.newPlot('dust', data, layout);
+
+        }
+
+
+        function tempGraph(temp_data,time){
+
+            let trace = {
+                x: time,
+                y: temp_data,
+                mode: 'area'
+            };
+            let data = [ trace ];
+            let layout = {
+                title:'온도',
+                xaxis:{
+                    zeroline: false
+                },
+                yaxis: {
+                    zeroline: false
+                }
+            };
+            Plotly.newPlot('temp', data, layout);
+        }
+        function humidGraph(humid_data,time){
+
+            let trace = {
+                x: time,
+                y: humid_data,
+                mode: 'area'
+            };
+            let data = [ trace ];
+            let layout = {
+                title:'습도'
+            };
+            Plotly.newPlot('hmd', data, layout);
+
+        }
+
+        function presGraph(pres_data,time){
+
+            let trace = {
+                x: time,
+                y: pres_data,
+                mode: 'area'
+            };
+            let data = [ trace ];
+            let layout = {
+                title:'기압'
+            };
+            
+            Plotly.newPlot('pres', data, layout);
+
+        }
+
+        
+    </script>
+
+    <style>
+ 
+
+  
+    </style>
+        <div id="chat" class = "bob_cotain">
+            <div>
+                <p class = "bobtitle">행정실에 연락</p>
+                <input type="text" name="content" id="content">
+                <button id = "buttonSubmit" class = "buttonSubmit">전송</button>
+                <select class="select" name="selectClass" id="selectClass">
+                    <option class = "option" value="1">1반</option>
+                    <option class = "option" value="2">2반</option>
+                    <option class = "option" value="3">3반</option>
+                    <option class = "option" value="4">4반</option>
+                </select>
+            </div>
+        </div>
+
+        <script>
+            document.getElementById('buttonSubmit').addEventListener('click',()=>{
+
+                let b = document.getElementById('selectClass');
+            let selectedClass = b[b.selectedIndex].value;
+            let contents = document.getElementById('content').value;
+            d = new Date();
+            datetext = d.toTimeString();
+            datetext = datetext.split(' ')[0];
+            contents = contents + '      ' +datetext;
+            console.log('/complain?cless='+selectedClass+'&content='+contents)
+            
+                var req = new XMLHttpRequest();
+            req.open('GET', '/complain?cless='+selectedClass+'&content='+contents, true);
+            req.onreadystatechange = function (aEvt) {
+            if (req.readyState === 4) {
+                if(req.status === 200){
+                
+                    let message = req.response;
+                    console.log(message)
+                    alert(message);
+                    location.reload();
+            
+                }
+                else{
+                    console.log("Error loading page\n");
+                }
+            }
+            };
+            req.send(null);
+
+            
+
+
+            })
+                        
+        </script>
+    <div>
+        
+        <div id="Bobcontainer" class = "bob_cotain">
+            <div>
+                
+                <p class = "bobtitle">오늘의 급식</p>
+                <p id= 'breakfast' class='bob'></p>
+                <p id= 'lunch' class='bob'></p>
+                <p id= 'dinner' class='bob'></p>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        
+        
+    
+        var req = new XMLHttpRequest();
+        req.open('GET', '/bob', true);
+        req.onreadystatechange = function (aEvt) {
+        if (req.readyState === 4) {
+            if(req.status === 200){
+                try{
+                    let bobObject = JSON.parse(req.response)
+                    document.getElementById('breakfast').innerText = "아침: "+bobObject.breakfast
+                    document.getElementById('lunch').innerText = "점심: "+bobObject.lunch
+                    document.getElementById('dinner').innerText ="저녁: "+ bobObject.dinner
+           
+                }
+                catch(err){
+
+                    document.getElementById('breakfast').innerText = "잠시 후 다시 시도해 주세요."
+                    document.getElementById('lunch').innerText = "잠시 후 다시 시도해 주세요."
+                    document.getElementById('dinner').innerText ="잠시 후 다시 시도해 주세요."
+                    
+                }
+                
+            }
+            else{
+                console.log("Error loading page\n");
+            }
+        }
+        };
+        req.send(null);
+        
+    </script>
+    
+
+<br><br><br>
+</body>
+</html>
