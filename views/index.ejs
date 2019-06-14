@@ -62,7 +62,7 @@
 
         function smallGraph(){
             let req = new XMLHttpRequest();
-            req.open('GET', '/graph/?class=a', true);
+            req.open('GET', '/lora/graph?class=a', true);
             req.onreadystatechange = function (aEvt) {
             if (req.readyState === 4) {
                 if(req.status === 200){
@@ -205,7 +205,7 @@
         function drawGraph(cless){
             console.log(cless)
             let req = new XMLHttpRequest();
-            req.open('GET', '/graph/?class='+cless, true);
+            req.open('GET', '/lora/graph?class='+cless, true);
             req.onreadystatechange = function (aEvt) {
             if (req.readyState === 4) {
                 if(req.status === 200){
@@ -364,7 +364,7 @@
             console.log('/complain?cless='+selectedClass+'&content='+contents)
             
                 var req = new XMLHttpRequest();
-            req.open('GET', '/complain?cless='+selectedClass+'&content='+contents, true);
+            req.open('GET', '/lora/complain?cless='+selectedClass+'&content='+contents, true);
             req.onreadystatechange = function (aEvt) {
             if (req.readyState === 4) {
                 if(req.status === 200){
@@ -409,7 +409,7 @@
         
     
         var req = new XMLHttpRequest();
-        req.open('GET', '/bob', true);
+        req.open('GET', '/lora/bob', true);
         req.onreadystatechange = function (aEvt) {
         if (req.readyState === 4) {
             if(req.status === 200){
