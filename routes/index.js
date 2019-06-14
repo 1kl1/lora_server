@@ -118,7 +118,7 @@ router.get('/complain',(req,res)=>{
 
 
 router.get('/graph',(req,res)=>{
-  parsedobj = parseURI(req.protocol + '://' + req.get('host') + req.originalUrl)
+  parsedobj = req.query
   let cless = parsedobj.class[0]
 
   if(cless != "a" && cless != undefined){
