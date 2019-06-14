@@ -4,6 +4,8 @@ html {
 }
 body {
     margin: 0;
+    /* overflow-x: scroll; */
+    overflow-x:hidden;
 }
 #nav {
     width: 100%;
@@ -148,16 +150,15 @@ margin-left: 2%;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    transition-duration: 0.4s;
     border-radius: 5px;
     background-color: #212529;
     cursor: pointer;
     display: inline-block;
     width: 181px;
+    z-index: 10;
   }
   
   .button:hover {
-    background-color: white;
     color: white;
   }
   
@@ -224,12 +225,6 @@ nav ul li:hover{
 color:white;
 }
 
-#products{
-padding-top:40px;
-font-weight:bold;
-color:#F7F7F7;
-}
-
 @media (max-width: 730px) {
 
 aside{
@@ -291,7 +286,8 @@ float:left;
 position: relative;
 
 background-color: #212529;
-width:225px;
+width:200px;
+height: 820px;
 
 }
 #nav-btn{
@@ -337,11 +333,9 @@ margin-top: 10px;
 }
 
 nav ul li:hover{
-background-color: #242849;
 color:white;
 }
 nav ul li a:hover{
-background-color: #242849;
 color:white;
 }
 
@@ -410,27 +404,14 @@ background-color:#efeff6;
 #left-menu{
 float:left;z-index: 999;position: relative; transition:all 1s ease;
 }
-.graph{
-    display: inline-block;
-    width: 49%;
-    height: 400px;
-}
+
 .weakFont{
     margin-top: 10px;
     font-size: 13px;
     color: grey;
     padding-left: 17%;
 }
-.smallgraph{
-    
-    display: inline-block;
-    width: 20%;
-    height: 300px;
-    margin-left: 14px;
-    background-color: white;
-    border-radius: 3px;
-    box-shadow: lightgrey 0px 0px 5px;
-}
+
        
 .select {
     display:flex;
@@ -510,3 +491,34 @@ float:left;z-index: 999;position: relative; transition:all 1s ease;
 .content_divider{
     color:#242849;display:inline-block; width: 80%; margin-left:30px; height:0.5px; border:lightgrey solid 1px; background-color:lightgrey
 }
+
+.weatherChart{
+    height: 100% !important;
+    width: 100% !important;
+}
+#rtGraph_Big{
+    display:inline-block;    
+}
+#rtGraph_small{
+    display:inline-block;
+}
+.card{
+    border-radius: 12px;
+    box-shadow: 0 6px 10px -4px rgba(0,0,0,.15);
+    background-color: #fff;
+    color: #252422;
+    margin-bottom: 20px;
+    position: relative;
+    border: 0;
+    display: inline-block;
+    padding: 10px;
+    margin: 10px;
+    width:40%;
+    transition: 1.5s ease-out all;
+}
+
+/* .chartContainer{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    grid-template-rows: repeat(2,1fr);
+} */

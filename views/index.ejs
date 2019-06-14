@@ -16,13 +16,13 @@
         <br>
         <nav>
             <ul>
-            <li><button class = "button" onclick="graphClick(this.innerText)">1반</button></li>
-            <li><button class = "button" onclick="graphClick(this.innerText)">2반</button></li>
-            <li><button class = "button" onclick="graphClick(this.innerText)">3반</button></li>
-            <li><button class = "button" onclick="graphClick(this.innerText)">4반</button></li>
-            <li id="products">Extra</li>
-            <li><a href="#chat" style = "color:#b8bad4;">행정실에 연락</a></li>
-            <li><a href="#Bobcontainer">오늘의 급식</a></li>
+            <li><button class = "button" onclick="">대시보드</button></li>
+            <li><button class = "button" onclick="">1반</button></li>
+            <li><button class = "button" onclick="">2반</button></li>
+            <li><button class = "button" onclick="">3반</button></li>
+            <li><button class = "button" onclick="">4반</button></li>
+            <li><button class = "button" onclick="">행정실 연락</button></li>
+            <li><button class = "button" onclick="">오늘의 급식</button></li>
             </ul>
         </nav>
         
@@ -31,42 +31,55 @@
     <h2 class="content_h2">각 반 공기질 현황</h2>
     <div class="content_divider"></div>
     <div class="weakFont">각 반 공기질 현황 > <b> 온도</b></div>
-    <br><br>    
-    <div id="graph">
-        <div id = row>
-        <div class = 'smallgraph' id="c1"></div>
-        <div class = 'smallgraph' id="c2"></div>
-        <div class = 'smallgraph' id="c3"></div>
-        <div class = 'smallgraph' id="c4"></div>
+
+    <div class="chartContainer">
+
+        <div class="card" onclick="emphasize_graph(this)" data-flag="0">
+            <section id="rtGraph_Big">
+                <canvas id="temperatureChart" class="weatherChart">
+                </canvas>
+            </section>
         </div>
+        <div class="card" onclick="emphasize_graph(this)"data-flag="0">
+            <section id="rtGraph_Big">
+                <canvas id="humidityChart" class="weatherChart">
+                </canvas>
+            </section>
+        </div>
+        <div class="card" onclick="emphasize_graph(this)"data-flag="0">
+            <section id="rtGraph_Big">
+                <canvas id="pressChart" class="weatherChart">
+                </canvas>
+            </section>
+        </div>
+        <div class="card" onclick="emphasize_graph(this)"data-flag="0">
+            <section id="rtGraph_Big">
+                <canvas id="dustChart" class="weatherChart">
+                </canvas>
+            </section>
+        </div>
+
     </div>
+
     
-    <div id="container">
-        <div class = "containerHeader">
-            <b>대시보드</b>
-        </div>
-        <hr>
-        <div>
-            <div id="graphHeader" class="graphHeader">&lt; 1반 &gt;</div>
-        </div>
-        <hr>
-        <br><br>
-            <div id="graph">
-                <div id = row>
-                <div class = 'graph' id="temp"></div>
-                <div class = 'graph' id="hmd"></div>
-                <div class = 'graph' id="dust"></div>
-                <div class = 'graph' id="pres"></div>
-            </div>
-        </div>
-    </div>
     
-    <div id="chat" class = "bob_cotain">
+    
+</body>
+<script src="data/index.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.min.js"></script>
+<script src="https://js.pusher.com/4.0/pusher.min.js"></script>
+<script src="data/graph.js"></script>
+</html>
+
+<!-- 
+
+<div id="chat" class = "bob_cotain">
         <div>
             <p class = "bobtitle">행정실에 연락</p>
             <input type="text" name="content" id="content">
             <button id = "buttonSubmit" class = "buttonSubmit">전송</button>
             <select class="select" name="selectClass" id="selectClass">
+                
                 <option class = "option" value="1">1반</option>
                 <option class = "option" value="2">2반</option>
                 <option class = "option" value="3">3반</option>
@@ -86,11 +99,4 @@
 
             </div>
         </div>
-    </div>
-
-    
-
-<br><br><br>
-</body>
-<script src="data/index.js"></script>
-</html>
+    </div> -->

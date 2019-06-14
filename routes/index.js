@@ -1,5 +1,6 @@
 var express = require('express')
 var router = express.Router()
+var Pusher = require('pusher');
 const bodyParser = require('body-parser')
 const url = require('url')
 const querystring = require('querystring')
@@ -13,6 +14,7 @@ let connection = mysql.createConnection({
   password : 'admin!@dbpass1',
   database : 'Maker_LoRa'
 })
+
 
 connection.connect();
 router.use(express.static('public'))
@@ -31,6 +33,67 @@ Date.prototype.yyyymmdd = function() {
           (dd>9 ? '' : '0') + dd
           ].join('');
 }
+
+let pusher = new Pusher({
+  appId: "803329",
+  key: "5cb4216125572be7615d",
+  secret: "a6c1dd01dbcc4b67dae9",
+  cluster: "ap3",
+  encrypted: true
+});
+
+
+router.get('/graph',(req,res)=>{
+  parsedobj = req.query
+  let cless = parsedobj.class
+
+  if(cless != undefined){
+    date = new Date().yyyymmdd()
+    //let sqlquery = "SELECT * FROM `data` WHERE `data_num`="+cless+" AND `timeforme` LIKE ? ORDER BY idx DESC LIMIT 200"
+    let sqlquery = "SELECT * FROM `data` WHERE `data_num`="+cless+" ORDER BY idx DESC LIMIT 15"
+
+    connection.query(sqlquery, function (error, results, fields) {
+      if (error) {
+        console.log(error)
+      }
+      else{
+        let finalJson = {
+          temperature:{
+            class:cless,
+            unit:'celsius',
+            dataPoints:[]
+          },
+          humid:{
+            class:cless,
+            unit:'percent',
+            dataPoints:[]
+          },
+          press:{
+            class:cless,
+            unit:'hex',
+            dataPoints:[]
+          },
+          dust:{
+            class:cless,
+            unit:'pm',
+            dataPoints:[]
+          }
+        }
+        results.forEach(element => {
+          finalJson.temperature.dataPoints.push({time:element.timeforme.substr(10,4),temperature:element.data_temp})
+          finalJson.humid.dataPoints.push({time:element.timeforme.substr(10,4),humid:element.data_humid})
+          finalJson.press.dataPoints.push({time:element.timeforme.substr(10,4),press:element.data_pres})
+          finalJson.dust.dataPoints.push({time:element.timeforme.substr(10,4),dust:element.data_dust})
+        })
+        finalJson.temperature.dataPoints.reverse()
+        finalJson.humid.dataPoints.reverse()
+        finalJson.press.dataPoints.reverse()
+        finalJson.dust.dataPoints.reverse()
+        res.send(finalJson)
+      }
+    })
+  }
+})
 
 router.get('/', function(req, res, next) {
   res.render('index', {
@@ -59,8 +122,30 @@ router.get('/get', (req, res) => {
         connection.query(sqlquery,params, function (error, results, fields) {
           if (error) 
             console.log(error)
-          else
-            console.log('Success!')
+          else{
+            // console.log('Success!')
+            // pusher.trigger('temperature', 'new-temperature', {
+            //   dataPoint: newDataPoint
+            // })
+            // app.get('/addTemperature', function(req,res){
+            //   var temp = parseInt(req.query.temperature);
+            //   var time = parseInt(req.query.time);
+            //   if(temp && time && !isNaN(temp) && !isNaN(time)){
+            //     var newDataPoint = {
+            //       temperature: temp,
+            //       time: time
+            //     };
+            //     londonTempData.dataPoints.push(newDataPoint);
+            //     pusher.trigger('london-temp-chart', 'new-temperature', {
+            //       dataPoint: newDataPoint
+            //     });
+            //     res.send({success:true});
+            //   }else{
+            //     res.send({success:false, errorMessage: 'Invalid Query Paramaters, required - temperature & time.'});
+            //   }
+            // });
+          }
+            
         })
       },1000)
       res.end('ACK')
@@ -112,41 +197,7 @@ router.get('/complain',(req,res)=>{
 })
 
 
-router.get('/graph',(req,res)=>{
-  parsedobj = req.query
-  let cless = parsedobj.class[0]
 
-  if(cless != "a" && cless != undefined){
-    date = new Date().yyyymmdd()
-    //let sqlquery = "SELECT * FROM `data` WHERE `data_num`="+cless+" AND `timeforme` LIKE ? ORDER BY idx DESC LIMIT 200"
-    let sqlquery = "SELECT * FROM `data` WHERE `data_num`="+cless+" ORDER BY idx DESC LIMIT 50"
-
-    connection.query(sqlquery,String(date) + '%', function (error, results, fields) {
-      if (error) {
-        console.log(error)
-      }
-      else{
-        res.send(results)
-        res.end('')
-      }
-    })
-  }
-  else{
-    date = new Date().yyyymmdd()
-    //let sqlquery = "SELECT * FROM `data` WHERE `timeforme` LIKE ? ORDER BY idx DESC LIMIT 400"
-    let sqlquery = "SELECT * FROM `data` ORDER BY idx DESC LIMIT 50"
-
-    connection.query(sqlquery,String(date) + '%', function (error, results, fields) {
-      if (error) {
-        console.log(error)
-      }
-      else{
-        res.send(results)
-        res.end('')
-      }
-    })
-  }
-})
 
 
 module.exports = router
