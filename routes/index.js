@@ -21,11 +21,6 @@ router.use(bodyParser.json())
 router.use(bodyParser.urlencoded({extended : true}))
 
 function pad2(n) { return n < 10 ? '0' + n : n }
-function parseURI(fullUrl) { 
-  parsedobj = url.parse(fullUrl)
-  parsedobj = querystring.parse(parsedobj.query)
-  return parsedobj
-}
 
 Date.prototype.yyyymmdd = function() {
   var mm = this.getMonth() + 1
@@ -50,7 +45,7 @@ router.get('/office',(req,res)=>{
 })
 
 router.get('/get', (req, res) => {
-  let parsedobj = parseURI(req.protocol + '://' + req.get('host') + req.originalUrl)
+  let parsedobj = req.query
   
   if(parsedobj.status=='set'){
     sqlquery = 'INSERT INTO `data` (`debug`, `data_num`, `data_temp`,`data_humid` ,`data_dust`, `data_co2`, `data_pres`,`data_batt`,`timeforme`) VALUES (?,?,?,?,?,?,?,?,?)'
@@ -87,7 +82,7 @@ router.get('/bob',(req,res)=>{
 })
 
 router.get('/complain',(req,res)=>{
-  parsedobj = parseURI(req.protocol + '://' + req.get('host') + req.originalUrl)
+  parsedobj = req.query
 
   if(parsedobj.status == 'teacher'){
     let sqlquery = "SELECT * FROM `request` ORDER BY idx DESC LIMIT 8"
