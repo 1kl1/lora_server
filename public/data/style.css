@@ -142,6 +142,7 @@ margin-left: 2%;
 }
 
 .button {
+
     margin: 1%;
     border: none;
     color: lightgrey;
@@ -288,7 +289,6 @@ position: relative;
 background-color: #212529;
 width:200px;
 height: 820px;
-
 }
 #nav-btn{
     fill:white;
@@ -495,9 +495,11 @@ float:left;z-index: 999;position: relative; transition:all 1s ease;
 .weatherChart{
     height: 100% !important;
     width: 100% !important;
+    
 }
 #rtGraph_Big{
-    display:inline-block;    
+    display:inline-block;
+    
 }
 #rtGraph_small{
     display:inline-block;
@@ -515,10 +517,29 @@ float:left;z-index: 999;position: relative; transition:all 1s ease;
     margin: 10px;
     width:40%;
     transition: 1.5s ease-out all;
+    
 }
 
-/* .chartContainer{
+.cardDashBoard{
+    border-radius: 12px;
+    box-shadow: 0 6px 10px -4px rgba(0,0,0,.15);
+    background-color: #fff;
+    color: #252422;
+    margin-bottom: 20px;
+    position: relative;
+    border: 0;
+    display: inline-block;
+    padding: 10px;
+    margin: 10px;
+    width:40%;
+    
+    margin: 40px;
+    width: 80%;
+    
+}
+
+
+.chartContainerDashBoard{
     display: grid;
-    grid-template-columns: repeat(2,1fr);
-    grid-template-rows: repeat(2,1fr);
-} */
+    
+}

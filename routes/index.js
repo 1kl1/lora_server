@@ -48,7 +48,6 @@ router.get('/graph',(req,res)=>{
   let cless = parsedobj.class
 
   if(cless != undefined){
-    date = new Date().yyyymmdd()
     //let sqlquery = "SELECT * FROM `data` WHERE `data_num`="+cless+" AND `timeforme` LIKE ? ORDER BY idx DESC LIMIT 200"
     let sqlquery = "SELECT * FROM `data` WHERE `data_num`="+cless+" ORDER BY idx DESC LIMIT 15"
 
@@ -96,9 +95,20 @@ router.get('/graph',(req,res)=>{
 })
 
 router.get('/', function(req, res, next) {
-  res.render('index', {
-       title: "LoRa Server"
-  })
+  parsedobj = req.query
+  let cless = parsedobj.class
+
+  if(cless == undefined){
+    res.render('index', {
+      title: "LoRa Server"
+    })
+  }else{
+    res.render('class_index', {
+      title: "LoRa Server",
+      cless: cless
+    })
+  }
+  
 })
 
 router.get('/office',(req,res)=>{

@@ -5,6 +5,7 @@
     <title>LoRa Maker Project</title>
     <link rel="stylesheet" href="data/style.css">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script></script>
 </head>
 <body>
     
@@ -28,28 +29,45 @@
             <li><button class = "button" onclick="">오늘의 급식</button></li>
             </ul>
         </div>
-        <div id="filler"></div>
     </div>
     
-    <h2 class="content_h2">대시보드</h2>
+    <div style="display:none;" id="current_class"><%=cless%></div>
+    <h2 class="content_h2"><%=cless%>반 공기질 현황</h2>
     <div class="content_divider"></div>
-    <div class="weakFont">대시보드 > <b>각 반 온도현황</b></div>
+    <div class="weakFont">각반 공기질 현황 > <b><%=cless%>반</b></div>
 
-    <div class="cardDashBoard">
-        <canvas id="dashboardChart" class="weatherChart">
-        <section id="rtGraph_Big">
-            </canvas>
-        </section>
+    <div class="chartContainer">
+        <div class="card" onclick="emphasize_graph(this)" data-flag="0">
+            <section id="rtGraph_Big">
+                <canvas id="temperatureChart" class="weatherChart">
+                </canvas>
+            </section>
+        </div>
+        <div class="card" onclick="emphasize_graph(this)"data-flag="0">
+            <section id="rtGraph_Big">
+                <canvas id="humidityChart" class="weatherChart">
+                </canvas>
+            </section>
+        </div>
+        <div class="card" onclick="emphasize_graph(this)"data-flag="0">
+            <section id="rtGraph_Big">
+                <canvas id="pressChart" class="weatherChart">
+                </canvas>
+            </section>
+        </div>
+        <div class="card" onclick="emphasize_graph(this)"data-flag="0">
+            <section id="rtGraph_Big">
+                <canvas id="dustChart" class="weatherChart">
+                </canvas>
+            </section>
+        </div>
     </div>
 
-    
-    
-    
 </body>
 <script src="scripts/sub.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.min.js"></script>
 <script src="https://js.pusher.com/4.0/pusher.min.js"></script>
-<script src="scripts/dashboard.js"></script>
+<script src="scripts/graph.js"></script>
 </html>
 
 <!-- 
