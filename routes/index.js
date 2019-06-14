@@ -1,13 +1,10 @@
 var express = require('express')
 var router = express.Router()
 const bodyParser = require('body-parser')
-const fs = require('fs')
 const url = require('url')
 const querystring = require('querystring')
 const mysql = require('mysql')
 const request = require('request')
-const fs = require('fs')
-const path = require('path')
 
 
 let connection = mysql.createConnection({
@@ -46,7 +43,7 @@ router.get('/', function(req, res, next) {
   })
 })
 
-app.get('/office',(req,res)=>{
+router.get('/office',(req,res)=>{
   res.render('office', {
     title: "LoRa Server"
   })
