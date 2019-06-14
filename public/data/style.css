@@ -7,11 +7,18 @@ body {
 }
 #nav {
     width: 100%;
-    background-color: white;
+    background-color: #343a40;
     margin: 0;
     padding-top: 10px;
     padding-bottom: 10px;
-    box-shadow: 0px 3px 10px lightgrey;
+    color: white;
+    padding-left: 16px;
+    padding-right: 16px;
+    height: 40px;
+}
+#nav > div{
+    margin: 10px;
+    font-size: 19px;
 }
 div > ul > li {
     display: inline;
@@ -131,33 +138,26 @@ margin-left: 2%;
     font-size: 18px;
     margin-left: 15px;
 }
-.timerFrame{
-    display: inline-block;
-    margin: 3%;
-    margin-left: 25%;
-}
 
 .button {
     margin: 1%;
     border: none;
-    color: #b8bad4;
+    color: lightgrey;
     padding: 15px 32px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    -webkit-transition-duration: 0.4s; /* Safari */
     transition-duration: 0.4s;
     border-radius: 5px;
-    background-color: #0e0c28;
+    background-color: #212529;
     cursor: pointer;
     display: inline-block;
     width: 181px;
-    font-weight: bold;
   }
   
   .button:hover {
-    background-color: #242849; /* Green */
+    background-color: white;
     color: white;
   }
   
@@ -221,11 +221,6 @@ margin-top: 10px;
 }
 
 nav ul li:hover{
-background-color: #242849;
-color:white;
-}
-nav ul li a:hover{
-background-color: #242849;
 color:white;
 }
 
@@ -292,7 +287,12 @@ background-color:#efeff6;
 }
 
 #left-menu{
-float:left;z-index: 999;position: relative; transition:all 1s ease;
+float:left;
+position: relative;
+
+background-color: #212529;
+width:225px;
+
 }
 #nav-btn{
     fill:white;
@@ -301,13 +301,6 @@ float:left;z-index: 999;position: relative; transition:all 1s ease;
     right:10px;
     top:7px;
     display:none;
-  }
-  .vertical-line{
-      margin-top:30px;
-      margin-bottom:30px;
-      width: 170px;
-      border-bottom:#F7F7F7 4px solid;
-          background-color: #3EACA8;
   }
   
 aside{

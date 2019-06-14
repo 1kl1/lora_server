@@ -7,55 +7,43 @@
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
-        <div id="nav">
-                <img src="data/aperture_official_logo_wtext_white_.png" alt="aperture logo" height="30px">
-            </div>
-        <aside id="left-menu">
-            
-            <h1 style = "color:white;">Menu</h1>
-            <br>
-            <nav>
-                <ul>
-                <li><button class = "button" onclick="graphClick(this.innerText)">1반</button>></li>
-                <li><button class = "button" onclick="graphClick(this.innerText)">2반</button>></li>
-                <li><button class = "button" onclick="graphClick(this.innerText)">3반</button>></li>
-                <li><button class = "button" onclick="graphClick(this.innerText)">4반</button>></li>
-                <li id="products">Extra</li>
-                <li><a href="#chat" style = "color:#b8bad4;">행정실에 연락</a></li>
-                <li><a href="#Bobcontainer">오늘의 급식</a></li>
-                <li><a href="#timerFrame">수능 타이머</a></li>
-                
-                </ul>
-            </nav>
-            
-            <div class="vertical-line"></div>
-            
-            </aside>
-            <script>
-                let prop = document.getElementById('left-menu');
-                window.addEventListener('scroll', function() {
-                        setTimeout(()=>{
-                        prop.style.top = String(window.scrollY)+'px';
-                    },10);
-                });
-            </script>
-
-        
-        <h2 style = " color:#242849;display:inline-block; margin-left:30px;margin-bottom: 10px; ">각 반 공기질 현황</h2>
-        <div style="color:#242849;display:inline-block; width: 80%; margin-left:30px; height:0.5px; border:lightgrey solid 1px; background-color:lightgrey"></div>
-        <div class="weakFont">각 반 공기질 현황 > <b> 온도</b></div>
-
-        <br><br>
-        
-        <div id="graph">
-            <div id = row>
-            <div class = 'smallgraph' id="c1"></div>
-            <div class = 'smallgraph' id="c2"></div>
-            <div class = 'smallgraph' id="c3"></div>
-            <div class = 'smallgraph' id="c4"></div>
-
-            </div>
+    <div id="nav">
+        <div>
+            개발새발 공기질관리
         </div>
+    </div>
+    <div id="left-menu">
+        <br>
+        <nav>
+            <ul>
+            <li><button class = "button" onclick="graphClick(this.innerText)">1반</button></li>
+            <li><button class = "button" onclick="graphClick(this.innerText)">2반</button></li>
+            <li><button class = "button" onclick="graphClick(this.innerText)">3반</button></li>
+            <li><button class = "button" onclick="graphClick(this.innerText)">4반</button></li>
+            <li id="products">Extra</li>
+            <li><a href="#chat" style = "color:#b8bad4;">행정실에 연락</a></li>
+            <li><a href="#Bobcontainer">오늘의 급식</a></li>
+            </ul>
+        </nav>
+        
+    </div>
+
+    
+    <h2 style = " color:#242849;display:inline-block; margin-left:30px;margin-bottom: 10px; ">각 반 공기질 현황</h2>
+    <div style="color:#242849;display:inline-block; width: 80%; margin-left:30px; height:0.5px; border:lightgrey solid 1px; background-color:lightgrey"></div>
+    <div class="weakFont">각 반 공기질 현황 > <b> 온도</b></div>
+
+    <br><br>
+    
+    <div id="graph">
+        <div id = row>
+        <div class = 'smallgraph' id="c1"></div>
+        <div class = 'smallgraph' id="c2"></div>
+        <div class = 'smallgraph' id="c3"></div>
+        <div class = 'smallgraph' id="c4"></div>
+
+        </div>
+    </div>
     
 <script>
     setInterval(()=>{smallGraph()},5000)
@@ -94,7 +82,7 @@
                              break;                               
                             }
                             
-                            time.push(Number(element.timeforme.substr(8,6))) 
+                            time.push(Number(element.timeforme.substr(10,4))) 
                         }
                         
                         if(index == array.length-1){
@@ -228,7 +216,7 @@
                             presD.push(element.data_pres)
                             
                         
-                        time.push(Number(element.timeforme.substr(8,6))) 
+                        time.push(Number(element.timeforme.substr(10,4))) 
                         
 
                         }
