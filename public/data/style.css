@@ -421,17 +421,16 @@ float:left;z-index: 999;position: relative; transition:all 1s ease;
 
        
 .select {
-    display:flex;
+    display: flex;
     flex-direction: column;
     position: relative;
-    width: 49px;
-    height: 28px;
+    width: 14%;
+    height: 32px;
     border-radius: 5px;
     font-size: 16px;
     float: right;
     margin-top: 10px;
-    
-    margin-right: 42px;
+    padding: 6px;
   }
   
   .option {
@@ -470,12 +469,20 @@ float:left;z-index: 999;position: relative; transition:all 1s ease;
     font-size: 15px;
     
 }
+#content_name{
+    width: 20%;
+    margin: 10px;
+    height: 24px;
+    font-size: 15px;
+    
+}
 .buttonSubmit{
     float: right;
     border: none;
     border-radius: 5px;
     display: inline-block;
-    width: 10%;
+    width: 13%;
+
     height: 40px;
     cursor: pointer;
     transition: ease all 0.4s;
@@ -607,4 +614,23 @@ float:left;z-index: 999;position: relative; transition:all 1s ease;
     position: absolute;
     color: white;   
     transition: 1s ease all;
+}
+#votingContainer{
+    top: 35%;
+    left: -30%;
+    padding: 10px;
+    width: 40%;
+    box-shadow: 0px 2px 7px lightgrey;
+    border-radius: 30px;
+    background-color: #474747;
+    position: absolute;
+    color: white;   
+    transition: 1s ease all;
+
+}
+.displayNone{
+    display:none;
+}
+.displayInlineBlock{
+    display:inline-block;
 }

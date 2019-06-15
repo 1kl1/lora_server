@@ -28,6 +28,37 @@ let pusher = new Pusher({
   encrypted: true
 });
 
+let vote = [
+  {
+    flag : 0,
+    title:"",
+    voters:[],
+    name:"",
+    people : 0
+  },
+  {
+    flag : 0,
+    title:"",
+    voters:[],
+    name:"",
+    people : 0
+  },
+  {
+    flag : 0,
+    title:"",
+    voters:[],
+    name:"",
+    people : 0
+  },
+  {
+    flag : 0,
+    title:"",
+    voters:[],
+    name:"",
+    people : 0
+  }
+]
+
 function pad2(n) { return n < 10 ? '0' + n : n }
 
 Date.prototype.yyyymmdd = function() {
@@ -40,21 +71,7 @@ Date.prototype.yyyymmdd = function() {
           ].join('');
 }
 
-function getClientIp(req) {
-  var ipAddress
-  var forwardedIpsStr = req.header('x-forwarded-for')
-  if (forwardedIpsStr) {
-    var forwardedIps = forwardedIpsStr.split(',')
-    ipAddress = forwardedIps[0];
-  }
-  if (!ipAddress) {
-    ipAddress = req.connection.remoteAddress
-  }
-  return ipAddress
-}
-
 router.get('/', function(req, res, next) {
-  console.log(getClientIp(req))
   parsedobj = req.query
   let cless = parsedobj.class
 
@@ -75,6 +92,41 @@ router.get('/office',(req,res)=>{
   res.render('office', {
     title: "LoRa Server"
   })
+})
+
+router.get('/voteCheck',(req,res)=>{
+  res.end(String(vote[req.query.cless-1].flag))
+})
+
+router.get('/voteProgress',(req,res)=>{
+  res.end(null)
+})
+
+router.get('/voteStart',(req,res)=>{
+  let parsedobj = req.query
+  classIndex = parsedobj.cless-1
+  // time, title, name, ip
+  if(parsedobj.status == "start"){
+    res.end('성공적으로 투표가 시작되었습니다.')
+    vote[classIndex].flag = 1
+    vote[classIndex].title = parsedobj.title
+    vote[classIndex].name = parsedobj.name
+    vote[classIndex].people = 1
+    vote[classIndex].voters.push(parsedobj.ip)
+    console.log(vote)
+    
+    setTimeout(()=>{
+      vote[classIndex] = {
+        flag : 0,
+        title:"",
+        voters:[],
+        name:"",
+        poeple : 0
+      }
+      console.log(vote)
+    },parsedobj.time)
+
+  }
 })
 
 router.get('/get', (req, res) => {

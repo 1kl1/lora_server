@@ -18,6 +18,7 @@
       }
       xhr.send(JSON.stringify(payload))
     }
+    
 
     let channel
     let temperatureGraphRef
@@ -200,6 +201,17 @@
   let curr_class = document.getElementById('current_class').innerText
   document.getElementsByClassName("button")[curr_class].style="color:white;"
   ajax("/lora/graph?class="+curr_class, "GET",{}, onFetchTempSuccess);
+  ajax("/lora/voteCheck?cless="+curr_class,"GET",{},(data)=>{
+    if(data=="1"){
+      document.getElementById("voteContainer").classList.add("displayNone")
+      document.getElementById("votingContainer").classList.add("displayInlineBlock")
+    }
+    else{
+      document.getElementById("voteContainer").classList.add("displayInlineBlock")
+      document.getElementById("votingContainer").classList.add("displayNone")
+      
+    }
+  })
   channel = pusher.subscribe('class_'+curr_class)
   
   channel.bind('temperature', function(data) {
@@ -281,13 +293,3 @@ function emphasize_graph(element){
     }
 }
 
-function voteClicked(element){
-  if(element.dataset.flag=="t"){
-      document.getElementById("voteContainer").style="left:13%;"
-      document.getElementById('vote_container_li').innerHTML = '<button class = "button" onclick="voteClicked(this)" style="color:white;" data-flag="f">'+document.getElementById('current_class').innerText+'반 투표하기</button><'
-  }
-  else{
-      document.getElementById("voteContainer").style="left:-30%"
-      document.getElementById('vote_container_li').innerHTML = '<button class = "button" onclick="voteClicked(this)" data-flag="t">'+document.getElementById('current_class').innerText+'반 투표하기</button>>'
-  }
-}

@@ -91,6 +91,21 @@
     <div id="voteContainer" class = "card">
         <div>
             <p class = "bobtitle">냉난방기 조절에 투표하기</p>
+            <input type="text" name="content" placeholder=" 투표 안건" id="content">
+            <select class="select" name="select" id="selectTime">
+                <option class = "option" value="">투표시간</option>
+                <option class = "option" value="3">3분</option>
+                <option class = "option" value="5">5분</option>
+                <option class = "option" value="10">10분</option>
+                <option class = "option" value="20">20분</option>
+            </select>
+            <input type="text" name="name" placeholder=" 개시자 이름" id="content_name">
+            <button onclick="ajax_vote(vote_submit)" class = "buttonSubmit">투표 개시!</button>
+        </div>
+    </div>
+    <div id="votingContainer" style="display:none;" class = "card">
+        <div>
+            <p class = "bobtitle">냉난방기 조절에 투표하기</p>
             
         </div>
     </div>
