@@ -499,7 +499,6 @@ float:left;z-index: 999;position: relative; transition:all 1s ease;
 }
 #rtGraph_Big{
     display:inline-block;
-    
 }
 #rtGraph_small{
     display:inline-block;

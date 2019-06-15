@@ -139,7 +139,8 @@
 
       temperatureConfig.datasets[n].data = tempData.dataPoints.map(dataPoint => dataPoint.temperature)
       
-      if(n==3){renderGraph(temperatureConfig)}
+      if(n==3){
+        renderGraph(temperatureConfig)}
   }
     
   

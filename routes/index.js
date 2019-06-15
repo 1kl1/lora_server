@@ -43,6 +43,7 @@ let pusher = new Pusher({
 });
 
 
+
 router.get('/graph',(req,res)=>{
   parsedobj = req.query
   let cless = parsedobj.class
