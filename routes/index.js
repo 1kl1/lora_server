@@ -40,7 +40,21 @@ Date.prototype.yyyymmdd = function() {
           ].join('');
 }
 
+function getClientIp(req) {
+  var ipAddress
+  var forwardedIpsStr = req.header('x-forwarded-for')
+  if (forwardedIpsStr) {
+    var forwardedIps = forwardedIpsStr.split(',')
+    ipAddress = forwardedIps[0];
+  }
+  if (!ipAddress) {
+    ipAddress = req.connection.remoteAddress
+  }
+  return ipAddress
+}
+
 router.get('/', function(req, res, next) {
+  console.log(getClientIp(req))
   parsedobj = req.query
   let cless = parsedobj.class
 

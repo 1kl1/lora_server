@@ -1,6 +1,6 @@
 
 (function() {
-
+    document.getElementsByClassName("button")[0].style="color:white;"
     Pusher.logToConsole = true
 
     let pusher = new Pusher("5cb4216125572be7615d", {

@@ -27,6 +27,7 @@
             <li><button class = "button" onclick="location.href='/lora/?class=4'">4반</button></li>
             <li style="color:white;" id="office_container_li"><button class = "button" onclick="officeClicked(this)" data-flag="t">행정실 문의</button>></li>
             <li style="color:white;" id="bob_container_li"><button class = "button" onclick="bobClicked(this)" data-flag="t">오늘의 급식</button>></li>
+            <li style="color:white;" id="vote_container_li"><button class = "button" onclick="voteClicked(this)" data-flag="t"><%=cless%>반 투표하기</button>></li>
             </ul>
         </div>
     </div>
@@ -84,6 +85,13 @@
             <p id= 'breakfast' class='bob'></p>
             <p id= 'lunch' class='bob'></p>
             <p id= 'dinner' class='bob'></p>
+        </div>
+    </div>
+
+    <div id="voteContainer" class = "card">
+        <div>
+            <p class = "bobtitle">냉난방기 조절에 투표하기</p>
+            
         </div>
     </div>
 
