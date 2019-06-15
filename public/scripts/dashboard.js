@@ -19,7 +19,7 @@
       xhr.send(JSON.stringify(payload))
     }
 
-    let channel
+    
     let graphRef
 
    function renderGraph(temperatureData) {
@@ -132,70 +132,48 @@
 
         temperatureConfig.labels = tempData.dataPoints.map(dataPoint => dataPoint.time);
         temperatureConfig.datasets[n].data = tempData.dataPoints.map(dataPoint => dataPoint.temperature)
+        flags[n] = true
     }
     function onFetchTempSuccessAdd(response,n){
-      let respData = JSON.parse(response)
+      let respData = JSON.parse(response) 
       let tempData = respData.temperature
 
       temperatureConfig.datasets[n].data = tempData.dataPoints.map(dataPoint => dataPoint.temperature)
       
-      if(n==3){
-        renderGraph(temperatureConfig)}
+      flags[n] = true
   }
     
   
-    
+    let flags = [false,false,false,false]
     ajax("/lora/graph?class=1", "GET",{}, onFetchTempSuccess,1);
     ajax("/lora/graph?class=2", "GET",{}, onFetchTempSuccessAdd,2);
     ajax("/lora/graph?class=3", "GET",{}, onFetchTempSuccessAdd,3);
     ajax("/lora/graph?class=4", "GET",{}, onFetchTempSuccessAdd,4);
-    
-  channel = pusher.subscribe('dashboard')
+    let checkCallbackFunction = setInterval(()=>{
+      
+      if(flags[0]&&flags[1]&&flags[2]&&flags[3]){
+        document.getElementById('loader').style.display = 'none';
+        renderGraph(temperatureConfig)
+        clearInterval(checkCallbackFunction)
+      }
+    },200)
+  
+  let channels = [0,0,0,0]
 
-  channel.bind('c1', function(data) {
-    var newTempData = data.dataPoint;
-    //newTempData = {
-      //       temperature: temp,
-      //       time: time
-      //     }
-    if(graphRef.data.labels.length > 15){
-      graphRef.data.labels.shift();  
-      graphRef.data.datasets[0].data.shift();
-    }
-    graphRef.data.labels.push(newTempData.time);
-    graphRef.data.datasets[0].data.push(newTempData.temperature);
-    graphRef.update();
-  })
-
-  channel.bind('c2', function(data) {
-    var newTempData = data.dataPoint;
-    if(graphRef.data.labels.length > 15){
-      graphRef.data.labels.shift();  
-      graphRef.data.datasets[1].data.shift();
-    }
-    graphRef.data.labels.push(newTempData.time);
-    graphRef.data.datasets[1].data.push(newTempData.temperature);
-    graphRef.update();
-  })
-  channel.bind('c3', function(data) {
-    var newTempData = data.dataPoint;
-    if(graphRef.data.labels.length > 15){
-      graphRef.data.labels.shift();  
-      graphRef.data.datasets[2].data.shift();
-    }
-    graphRef.data.labels.push(newTempData.time);
-    graphRef.data.datasets[2].data.push(newTempData.temperature);
-    graphRef.update();
-  })
-  channel.bind('c4', function(data) {
-    var newTempData = data.dataPoint;
-    if(graphRef.data.labels.length > 15){
-      graphRef.data.labels.shift();  
-      graphRef.data.datasets[3].data.shift();
-    }
-    graphRef.data.labels.push(newTempData.time);
-    graphRef.data.datasets[3].data.push(newTempData.temperature);
-    graphRef.update();
-  })
+  for(i=1;i<5;i++){
+    let index = i-1
+    channels[index] = pusher.subscribe('class_'+i)
+    channels[index].bind('temperature', function(data) {
+      console.log(graphRef)
+      var newTempData = data.dataPoint;
+      if(graphRef.data.labels.length > 14){
+        graphRef.data.labels.shift();
+        graphRef.data.datasets[index].data.shift();
+      }
+      graphRef.data.labels.push(newTempData.time);
+      graphRef.data.datasets[index].data.push(newTempData.temperature);
+      graphRef.update();
+    })
+  }
 
 })();

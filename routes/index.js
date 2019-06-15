@@ -2,8 +2,6 @@ var express = require('express')
 var router = express.Router()
 var Pusher = require('pusher');
 const bodyParser = require('body-parser')
-const url = require('url')
-const querystring = require('querystring')
 const mysql = require('mysql')
 const request = require('request')
 
@@ -22,6 +20,14 @@ router.use(express.static('public'))
 router.use(bodyParser.json())
 router.use(bodyParser.urlencoded({extended : true}))
 
+let pusher = new Pusher({
+  appId: "803329",
+  key: "5cb4216125572be7615d",
+  secret: "a6c1dd01dbcc4b67dae9",
+  cluster: "ap3",
+  encrypted: true
+});
+
 function pad2(n) { return n < 10 ? '0' + n : n }
 
 Date.prototype.yyyymmdd = function() {
@@ -34,15 +40,81 @@ Date.prototype.yyyymmdd = function() {
           ].join('');
 }
 
-let pusher = new Pusher({
-  appId: "803329",
-  key: "5cb4216125572be7615d",
-  secret: "a6c1dd01dbcc4b67dae9",
-  cluster: "ap3",
-  encrypted: true
-});
+router.get('/', function(req, res, next) {
+  parsedobj = req.query
+  let cless = parsedobj.class
 
+  if(cless == undefined){
+    res.render('index', {
+      title: "LoRa Server"
+    })
+  }else{
+    res.render('class_index', {
+      title: "LoRa Server",
+      cless: cless
+    })
+  }
+  
+})
 
+router.get('/office',(req,res)=>{
+  res.render('office', {
+    title: "LoRa Server"
+  })
+})
+
+router.get('/get', (req, res) => {
+  let parsedobj = req.query
+  
+  if(parsedobj.status=='set'){
+    sqlquery = 'INSERT INTO `data` (`debug`, `data_num`, `data_temp`,`data_humid` ,`data_dust`, `data_co2`, `data_pres`,`data_batt`,`timeforme`) VALUES (?,?,?,?,?,?,?,?,?)'
+    
+    if(parsedobj.humid === undefined || parsedobj.temp === undefined || parsedobj.num === undefined || parsedobj.dust === undefined || parsedobj.pres === undefined){
+      res.end('err')
+    }
+    else{
+      let date = new Date();
+      let yyyymmddhhmmss = date.yyyymmdd()+ pad2( date.getHours() ) + pad2( date.getMinutes() ) + pad2( date.getSeconds() )
+      let params = [500,Number(parsedobj.num),parseFloat(parsedobj.temp),parseFloat(parsedobj.humid),parseFloat(parsedobj.dust),0.0,parseFloat(parsedobj.pres),100,yyyymmddhhmmss];
+      
+        connection.query(sqlquery,params, function (error, results, fields) {
+          if (error) 
+            console.log(error)
+          else{
+            res.end('ACK')
+            pusher.trigger('class_'+parsedobj.num, 'temperature', {
+              dataPoint: {
+                temperature: parseFloat(parsedobj.temp),
+                time: yyyymmddhhmmss.substr(10,4)
+              }
+            })
+            pusher.trigger('class_'+parsedobj.num, 'humidity', {
+              dataPoint: {
+                temperature: parseFloat(parsedobj.humid),
+                time: yyyymmddhhmmss.substr(10,4)
+              }
+            })
+            pusher.trigger('class_'+parsedobj.num, 'press', {
+              dataPoint: {
+                temperature: parseFloat(parsedobj.pres),
+                time: yyyymmddhhmmss.substr(10,4)
+              }
+            })
+            pusher.trigger('class_'+parsedobj.num, 'dust', {
+              dataPoint: {
+                temperature: parseFloat(parsedobj.dust),
+                time: yyyymmddhhmmss.substr(10,4)
+              }
+            })
+          }
+        })
+        }
+  }
+  else{
+    res.writeHead(200,{'Content-Type':'text/html'})
+    res.end('Handle')
+  }
+})
 
 router.get('/graph',(req,res)=>{
   parsedobj = req.query
@@ -90,83 +162,12 @@ router.get('/graph',(req,res)=>{
         finalJson.press.dataPoints.reverse()
         finalJson.dust.dataPoints.reverse()
         res.send(finalJson)
+        
       }
     })
   }
 })
 
-router.get('/', function(req, res, next) {
-  parsedobj = req.query
-  let cless = parsedobj.class
-
-  if(cless == undefined){
-    res.render('index', {
-      title: "LoRa Server"
-    })
-  }else{
-    res.render('class_index', {
-      title: "LoRa Server",
-      cless: cless
-    })
-  }
-  
-})
-
-router.get('/office',(req,res)=>{
-  res.render('office', {
-    title: "LoRa Server"
-  })
-})
-
-router.get('/get', (req, res) => {
-  let parsedobj = req.query
-  
-  if(parsedobj.status=='set'){
-    sqlquery = 'INSERT INTO `data` (`debug`, `data_num`, `data_temp`,`data_humid` ,`data_dust`, `data_co2`, `data_pres`,`data_batt`,`timeforme`) VALUES (?,?,?,?,?,?,?,?,?)'
-    if(Number(parsedobj.num)==NaN||parseFloat(parsedobj.temp)==NaN||parseFloat(parsedobj.humid)==NaN||parseFloat(parsedobj.dust)==NaN||parseFloat(parsedobj.pres)==NaN)
-      res.end("err")
-    
-    else{
-      let date = new Date();
-      let params = [500,Number(parsedobj.num),parseFloat(parsedobj.temp),parseFloat(parsedobj.humid),parseFloat(parsedobj.dust),0.0,parseFloat(parsedobj.pres),100,date.getFullYear().toString() + pad2(date.getMonth() + 1) + pad2( date.getDate()) + pad2( date.getHours() ) + pad2( date.getMinutes() ) + pad2( date.getSeconds() )];
-      setTimeout(()=>{
-        connection.query(sqlquery,params, function (error, results, fields) {
-          if (error) 
-            console.log(error)
-          else{
-            // console.log('Success!')
-            // pusher.trigger('temperature', 'new-temperature', {
-            //   dataPoint: newDataPoint
-            // })
-            // app.get('/addTemperature', function(req,res){
-            //   var temp = parseInt(req.query.temperature);
-            //   var time = parseInt(req.query.time);
-            //   if(temp && time && !isNaN(temp) && !isNaN(time)){
-            //     var newDataPoint = {
-            //       temperature: temp,
-            //       time: time
-            //     };
-            //     londonTempData.dataPoints.push(newDataPoint);
-            //     pusher.trigger('london-temp-chart', 'new-temperature', {
-            //       dataPoint: newDataPoint
-            //     });
-            //     res.send({success:true});
-            //   }else{
-            //     res.send({success:false, errorMessage: 'Invalid Query Paramaters, required - temperature & time.'});
-            //   }
-            // });
-          }
-            
-        })
-      },1000)
-      res.end('ACK')
-    }
-  }
-  else{
-    res.writeHead(200,{'Content-Type':'text/html'})
-    res.end('Handle')
-  } 
-})
 
 router.get('/bob',(req,res)=>{
   var date = new Date()

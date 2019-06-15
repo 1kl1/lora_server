@@ -25,16 +25,7 @@ function ajax_bob(){
     req.send(null)
 }
 
-function officeClicked(element){
-    if(element.dataset.flag=="t"){
-        document.getElementById("chat").style="left:13%;"
-        document.getElementById('office_container_li').innerHTML = '<button class = "button" onclick="officeClicked(this)" data-flag="f">행정실 문의</button><'
-    }
-    else{
-        document.getElementById("chat").style="left:-30%"
-        document.getElementById('office_container_li').innerHTML = '<button class = "button" onclick="officeClicked(this)" data-flag="t">행정실 문의</button>>'
-    }
-}
+
 
 function bobClicked(element){
     if(element.dataset.flag=="t"){
@@ -49,36 +40,68 @@ function bobClicked(element){
 
 
 
-
-document.getElementById('buttonSubmit').addEventListener('click',()=>{
-    let b = document.getElementById('selectClass');
-    let selectedClass = b[b.selectedIndex].value;
-    let contents = document.getElementById('content').value;
-    d = new Date();
-    datetext = d.toTimeString();
-    datetext = datetext.split(' ')[0];
-    contents = contents + '      ' +datetext;
-    console.log('/complain?cless='+selectedClass+'&content='+contents)
-
-    var req = new XMLHttpRequest();
-
-    req.open('GET', '/lora/complain?cless='+selectedClass+'&content='+contents, true);
-        req.onreadystatechange = function (aEvt) {
-            if (req.readyState === 4) {
-                if(req.status === 200){
+function putTable(index,data){
+    if(index == data.length-1){
         
-                    let message = req.response;
-                    console.log(message)
-                    alert(message);
-                    location.reload();
+        return
+    }
+    
+    let n = document.getElementById('tableContent');
+    let a = document.createElement('tr');
+    let b = document.createElement('td');
+    let c = document.createElement('td');
+    b.setAttribute('class','text-left')
+    c.setAttribute('class','text-left')
+    b.innerText = data[index].content;
+    c.innerText = data[index].cless;
 
-                }
-                else{
-                    console.log("Error loading page\n");
-                }
-            }
+    a.appendChild(b)
+    a.appendChild(c)
+    n.appendChild(a)
+    return putTable(index+1,data)
+    
+}
+var req = new XMLHttpRequest();
+req.open('GET', '/lora/complain?status=teacher', true);
+req.onreadystatechange = function (aEvt) {
+if (req.readyState === 4) {
+    if(req.status === 200){
+    
+        let response = JSON.parse("[" + req.response + "]")[0];
+        let myNode = document.getElementById("tableContent");
+        while (myNode.firstChild) {
+            myNode.removeChild(myNode.firstChild);
         }
-    req.send(null)
-})
+        putTable(0,response);
 
-ajax_bob()
+    }
+    else{
+        console.log("Error loading page\n");
+    }
+}
+};
+req.send(null);
+
+setInterval(()=>{
+    var req = new XMLHttpRequest();
+    req.open('GET', '/lora/complain?status=teacher', true);
+    req.onreadystatechange = function (aEvt) {
+    if (req.readyState === 4) {
+        if(req.status === 200){
+        
+            let response = JSON.parse("[" + req.response + "]")[0];
+            let myNode = document.getElementById("tableContent");
+            while (myNode.firstChild) {
+                myNode.removeChild(myNode.firstChild);
+            }
+            putTable(0,response);
+    
+        }
+        else{
+            console.log("Error loading page\n");
+        }
+    }
+    };
+    req.send(null);
+
+},5000)

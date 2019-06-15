@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>LoRa Maker Project</title>
+    <title>LoRa Air Management</title>
     <link rel="stylesheet" href="data/style.css">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
@@ -24,8 +24,8 @@
             <li><button class = "button" onclick="location.href='/lora/?class=2'">2반</button></li>
             <li><button class = "button" onclick="location.href='/lora/?class=3'">3반</button></li>
             <li><button class = "button" onclick="location.href='/lora/?class=4'">4반</button></li>
-            <li><button class = "button" onclick="">행정실 연락</button></li>
-            <li><button class = "button" onclick="">오늘의 급식</button></li>
+            <li style="color:white;" id="office_container_li"><button class = "button" onclick="officeClicked(this)" data-flag="t">행정실 문의</button>></li>
+            <li style="color:white;" id="bob_container_li"><button class = "button" onclick="bobClicked(this)" data-flag="t">오늘의 급식</button>></li>
             </ul>
         </div>
         <div id="filler"></div>
@@ -34,16 +34,38 @@
     <h2 class="content_h2">대시보드</h2>
     <div class="content_divider"></div>
     <div class="weakFont">대시보드 > <b>각 반 온도현황</b></div>
-
+    <div id="loader" class="loader"></div>
     <div class="cardDashBoard">
+        
         <canvas id="dashboardChart" class="weatherChart">
         <section id="rtGraph_Big">
             </canvas>
         </section>
     </div>
 
+    <div id="chat" class = "card">
+        <div>
+            <p class = "bobtitle">행정실에 문의</p>
+            <input type="text" name="content" placeholder="  요청할 내용을 적어주세요" id="content">
+            <select class="select" name="selectClass" id="selectClass">
+                <option class = "option" value="1">1반</option>
+                <option class = "option" value="2">2반</option>
+                <option class = "option" value="3">3반</option>
+                <option class = "option" value="4">4반</option>
+            </select>
+            <button id = "buttonSubmit" class = "buttonSubmit">전송</button>
+        </div>
+    </div>
+
     
-    
+    <div id="bobContainer" class = "card">
+        <div>
+            <p class = "bobtitle">오늘의 급식</p>
+            <p id= 'breakfast' class='bob'></p>
+            <p id= 'lunch' class='bob'></p>
+            <p id= 'dinner' class='bob'></p>
+        </div>
+    </div>
     
 </body>
 <script src="scripts/sub.js"></script>
@@ -52,32 +74,8 @@
 <script src="scripts/dashboard.js"></script>
 </html>
 
-<!-- 
 
-<div id="chat" class = "bob_cotain">
-        <div>
-            <p class = "bobtitle">행정실에 연락</p>
-            <input type="text" name="content" id="content">
-            <button id = "buttonSubmit" class = "buttonSubmit">전송</button>
-            <select class="select" name="selectClass" id="selectClass">
-                
-                <option class = "option" value="1">1반</option>
-                <option class = "option" value="2">2반</option>
-                <option class = "option" value="3">3반</option>
-                <option class = "option" value="4">4반</option>
-            </select>
-        </div>
-    </div>
+
+
        
-    <div>
-        <div id="Bobcontainer" class = "bob_cotain">
-            <div>
-                
-                <p class = "bobtitle">오늘의 급식</p>
-                <p id= 'breakfast' class='bob'></p>
-                <p id= 'lunch' class='bob'></p>
-                <p id= 'dinner' class='bob'></p>
 
-            </div>
-        </div>
-    </div> -->

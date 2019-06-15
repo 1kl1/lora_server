@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -39,11 +39,9 @@
             </script>
 
     
-
-    <!--########################## !-->
     
 
-        
+<!--         
         <h2 style = " color:#242849;display:inline-block; margin-left:30px;margin-bottom: 10px; ">각 반 공기질 현황</h2>
         <div style="color:#242849;display:inline-block; width: 80%; margin-left:30px; height:0.5px; border:lightgrey solid 1px; background-color:lightgrey"></div>
         <div class="weakFont">각 반 공기질 현황 > <b> 온도</b></div>
@@ -164,22 +162,7 @@
 </script>
 
 <div id="chat" class = "bob_cotain">
-        <div>
-            <p class = "bobtitle">최근 행정실 문의내역</p>
-            <table class="table-fill">
-                    <thead>
-                    <tr>
-                    <th class="text-left">내용</th>
-                    <th class="text-left">반</th>
-                    
-                    </tr>
-                    </thead>
-                    <tbody class="table-hover" id ='tableContent'>
-                    
-                    
-                    </tbody>
-                    </table>
-        </div>
+        
     </div>
 
     <script>
@@ -427,7 +410,7 @@
 
         
     </script>
-<!-- 
+
     let a=  {
         idx: 8,
         timestamp: "2018-12-17T01:57:34.000Z",
@@ -438,8 +421,8 @@
         data_co2: 1,
         data_pres: 1,
         data_batt: 1,
-        timeforme: '20181217' } -->
-    <!--########################## !-->
+        timeforme: '20181217' } 
+
 
     <div>
     
@@ -525,7 +508,91 @@
   
     </style>   
     
-    <!--########################## !-->
 <br><br><br>
 </body>
+</html> --> 
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LoRa Air Management</title>
+    <link rel="stylesheet" href="data/style.css">
+    <link rel="stylesheet" href="data/style_office.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    
+    
+    <div id="nav">
+        <div>
+            교무실 페이지
+        </div>
+    </div>
+
+    <div id="left-menu" style="height: 1470px;">
+        <br>
+        <div>
+            <ul>
+            <li><button class = "button" onclick="location.href='/lora'">대시보드</button></li>
+            <li><button class = "button" onclick="location.href='/lora/?class=1'">1반</button></li>
+            <li><button class = "button" onclick="location.href='/lora/?class=2'">2반</button></li>
+            <li><button class = "button" onclick="location.href='/lora/?class=3'">3반</button></li>
+            <li><button class = "button" onclick="location.href='/lora/?class=4'">4반</button></li>
+            <li style="color:white;" id="bob_container_li"><button class = "button" onclick="bobClicked(this)" data-flag="t">오늘의 급식</button>></li>
+            </ul>
+        </div>
+        <div id="filler"></div>
+    </div>
+    
+    <h2 class="content_h2">대시보드</h2>
+    <div class="content_divider"></div>
+    <div class="weakFont">대시보드 > <b>각 반 온도현황</b></div>
+    <div id="loader" class="loader"></div>
+    <div class="cardDashBoard">
+        
+        <canvas id="dashboardChart" class="weatherChart">
+        <section id="rtGraph_Big">
+            </canvas>
+        </section>
+    </div>
+    <div class="cardDashBoard" style="margin-top: 0;">
+        <div>
+            <p class = "bobtitle">최근 행정실 문의내역</p>
+            <table class="table-fill">
+                <thead>
+                <tr>
+                    <th class="text-left">내용</th>
+                    <th class="text-left">반</th>   
+                </tr>
+                </thead>
+                <tbody class="table-hover" id ='tableContent'>
+                    
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="bobContainer" class = "card">
+        <div>
+            <p class = "bobtitle">오늘의 급식</p>
+            <p id= 'breakfast' class='bob'></p>
+            <p id= 'lunch' class='bob'></p>
+            <p id= 'dinner' class='bob'></p>
+        </div>
+    </div>
+    
+</body>
+<script src="scripts/office.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.min.js"></script>
+<script src="https://js.pusher.com/4.0/pusher.min.js"></script>
+<script src="scripts/dashboard.js"></script>
 </html>
+
+
+
+
+       
+
