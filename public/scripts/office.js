@@ -25,7 +25,7 @@ function ajax_bob(){
     req.send(null)
 }
 
-
+ajax_bob()
 
 function bobClicked(element){
     if(element.dataset.flag=="t"){
