@@ -1,7 +1,6 @@
 
 (function() {
     document.getElementsByClassName("button")[0].style="color:white;"
-    Pusher.logToConsole = true
 
     let pusher = new Pusher("5cb4216125572be7615d", {
           cluster: "ap3",
@@ -164,7 +163,6 @@
     let index = i-1
     channels[index] = pusher.subscribe('class_'+i)
     channels[index].bind('temperature', function(data) {
-      console.log(graphRef)
       var newTempData = data.dataPoint;
       if(graphRef.data.labels.length > 14){
         graphRef.data.labels.shift();

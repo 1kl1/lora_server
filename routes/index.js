@@ -122,7 +122,6 @@ router.get('/voteCheck',(req,res)=>{
 router.get('/voteProgress',(req,res)=>{
   let parsedobj = req.query
   classIndex = parsedobj.cless-1
-  console.log(parsedobj.ip)
   if(!vote[classIndex].voters.includes(parsedobj.ip)){
     vote[classIndex].voters.push(parsedobj.ip)
     vote[classIndex].people += 1
@@ -150,7 +149,6 @@ router.get('/voteStart',(req,res)=>{
     vote[classIndex].voters.push(parsedobj.ip)
     vote[classIndex].time = parsedobj.endtime
     vote[classIndex].agree = 1
-    console.log(vote)
     
     setTimeout(()=>{
       vote[classIndex] = {
@@ -163,7 +161,6 @@ router.get('/voteStart',(req,res)=>{
         agree:0,
         disagree:0
       }
-      console.log(vote)
     },parsedobj.time)
 
   }

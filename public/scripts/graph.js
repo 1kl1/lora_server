@@ -1,7 +1,6 @@
 
 (function() {
 
-    Pusher.logToConsole = true
 
     let pusher = new Pusher("5cb4216125572be7615d", {
           cluster: "ap3",

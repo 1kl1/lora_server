@@ -130,7 +130,6 @@ function vote_submit(ip){
             if (req.readyState === 4) {
                 if(req.status === 200){
                     let message = req.response;
-                    console.log(message)
                     alert(message);
                     location.reload();
                 }
@@ -161,7 +160,6 @@ document.getElementById('buttonSubmit').addEventListener('click',()=>{
     datetext = d.toTimeString();
     datetext = datetext.split(' ')[0];
     contents = contents + '      ' +datetext;
-    console.log('/complain?cless='+selectedClass+'&content='+contents)
 
     var req = new XMLHttpRequest();
 
@@ -171,7 +169,6 @@ document.getElementById('buttonSubmit').addEventListener('click',()=>{
                 if(req.status === 200){
         
                     let message = req.response;
-                    console.log(message)
                     alert(message);
                     location.reload();
 
