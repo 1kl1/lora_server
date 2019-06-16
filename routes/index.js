@@ -122,7 +122,7 @@ router.get('/voteCheck',(req,res)=>{
 router.get('/voteProgress',(req,res)=>{
   let parsedobj = req.query
   classIndex = parsedobj.cless-1
-
+  console.log(parsedobj.ip)
   if(!vote[classIndex].voters.includes(parsedobj.ip)){
     vote[classIndex].voters.push(parsedobj.ip)
     vote[classIndex].people += 1
