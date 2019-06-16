@@ -96,15 +96,19 @@ function voteClicked(element){
   }
 
 function ajax_vote(successCallback){
-    var xhr = new XMLHttpRequest()
-    xhr.open('GET', 'https://api.ipify.org?format=jsonp&callback=getIP', true)
-    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState != 4 || xhr.status != 200) return
-        successCallback(JSON.parse("{"+xhr.responseText.split("{")[1].split('}')[0]+"}").ip)
-        
+
+    var RTCPeerConnection = window.RTCPeerConnection || window.webkitRTCPeerConnection || window.mozRTCPeerConnection || window.msRTCPeerConnection;
+    var rtc = new RTCPeerConnection();
+    rtc.createDataChannel("TEMP");
+    rtc.onicecandidate = function(iceevent) {
+    if( iceevent && iceevent.candidate && iceevent.candidate.candidate ) {
+        var r = /\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/;
+        var t = iceevent.candidate.candidate.match(r);
+            successCallback(t[0]); //IP
     }
-    xhr.send("")
+    }
+
+    rtc.createOffer().then(offer=>rtc.setLocalDescription(offer));
 }
 function vote_submit(ip){
 
