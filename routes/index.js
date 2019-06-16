@@ -34,28 +34,40 @@ let vote = [
     title:"",
     voters:[],
     name:"",
-    people : 0
+    people : 0,
+    time:"",
+    agree:0,
+    disagree:0
   },
   {
     flag : 0,
     title:"",
     voters:[],
     name:"",
-    people : 0
+    people : 0,
+    time:"",
+    agree:0,
+    disagree:0
   },
   {
     flag : 0,
     title:"",
     voters:[],
     name:"",
-    people : 0
+    people : 0,
+    time:"",
+    agree:0,
+    disagree:0
   },
   {
     flag : 0,
     title:"",
     voters:[],
     name:"",
-    people : 0
+    people : 0,
+    time:"",
+    agree:0,
+    disagree:0
   }
 ]
 
@@ -95,11 +107,34 @@ router.get('/office',(req,res)=>{
 })
 
 router.get('/voteCheck',(req,res)=>{
-  res.end(String(vote[req.query.cless-1].flag))
+  let voteStatus = {}
+  let clessIndex = req.query.cless-1
+  voteStatus.flag = vote[clessIndex].flag
+  voteStatus.title = vote[clessIndex].title
+  voteStatus.name =  vote[clessIndex].name
+  voteStatus.time = vote[clessIndex].time
+  voteStatus.agree =vote[clessIndex].agree
+  voteStatus.disagree = vote[clessIndex].disagree
+
+  res.end(JSON.stringify(voteStatus))
 })
 
 router.get('/voteProgress',(req,res)=>{
-  res.end(null)
+  let parsedobj = req.query
+  classIndex = parsedobj.cless-1
+
+  if(!vote[classIndex].voters.includes(parsedobj.ip)){
+    vote[classIndex].voters.push(parsedobj.ip)
+    vote[classIndex].people += 1
+    if(parsedobj.result == 1){
+      vote[classIndex].agree+=1
+    }else{
+      vote[classIndex].disagree+=1
+    }
+    res.end("투표되었습니다.")
+  }else{
+    res.end("이미 투표하셨습니다.")
+  }
 })
 
 router.get('/voteStart',(req,res)=>{
@@ -113,6 +148,8 @@ router.get('/voteStart',(req,res)=>{
     vote[classIndex].name = parsedobj.name
     vote[classIndex].people = 1
     vote[classIndex].voters.push(parsedobj.ip)
+    vote[classIndex].time = parsedobj.endtime
+    vote[classIndex].agree = 1
     console.log(vote)
     
     setTimeout(()=>{
@@ -121,7 +158,10 @@ router.get('/voteStart',(req,res)=>{
         title:"",
         voters:[],
         name:"",
-        poeple : 0
+        poeple : 0,
+        time:"",
+        agree:0,
+        disagree:0
       }
       console.log(vote)
     },parsedobj.time)

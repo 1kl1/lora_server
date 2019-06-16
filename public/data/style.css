@@ -495,6 +495,25 @@ float:left;z-index: 999;position: relative; transition:all 1s ease;
 .buttonSubmit:hover{
     color: #212529;
 }
+.buttonCancel:hover{
+    color: #212529;
+}
+.buttonCancel{
+    float: right;
+    border: none;
+    border-radius: 5px;
+    display: inline-block;
+    width: 13%;
+
+    height: 40px;
+    cursor: pointer;
+    transition: ease all 0.4s;
+    margin: 5px;
+    margin-right: 2%;
+    background-color: #FF6F6F;
+    color: white;
+    font-size: 15px;
+}
 
 .content_h2{
     color:#242849;display:inline-block; margin-left:30px;margin-bottom: 10px;
@@ -616,7 +635,7 @@ float:left;z-index: 999;position: relative; transition:all 1s ease;
     transition: 1s ease all;
 }
 #votingContainer{
-    top: 35%;
+    top: 45%;
     left: -30%;
     padding: 10px;
     width: 40%;
@@ -634,3 +653,70 @@ float:left;z-index: 999;position: relative; transition:all 1s ease;
 .displayInlineBlock{
     display:inline-block;
 }
+
+#votingTitle{
+    background-color: #efeff6;
+    color: black;
+    border-radius: 5px;
+    height: 20px;
+    padding: 9px;
+    font-size: 16px;
+    width: 70%;
+    font-weight: bold;
+    float: left;
+    text-align: center;
+}
+
+#votingAgree{
+    background-color: #efeff6;
+    color: black;
+    border-radius: 5px;
+    height: 20px;
+    padding: 9px;
+    font-size: 16px;
+    width: 33%;
+    font-weight: bold;
+    text-align: center;
+    float: left;
+    margin-top: 10px;
+}
+#votingDisagree{
+    background-color: #efeff6;
+    color: black;
+    border-radius: 5px;
+    height: 20px;
+    padding: 9px;
+    font-size: 16px;
+    width: 33%;
+    font-weight: bold;
+    text-align: center;
+    float: left;
+    margin-top: 10px;
+    margin-left: 1%;
+}
+#votingAuthor{
+    background-color: #efeff6;
+    color: black;
+    border-radius: 5px;
+    height: 20px;
+    padding: 9px;
+    font-size: 16px;
+    width: 23%;
+    font-weight: bold;
+    text-align: center;
+    float: right;
+    margin-top: 10px;
+}
+#votingEndTime{
+    background-color: #efeff6;
+    color: black;
+    border-radius: 5px;
+    height: 20px;
+    padding: 9px;
+    font-size: 16px;
+    width: 23%;
+    font-weight: bold;
+    text-align: center;
+    float: right;
+}
+

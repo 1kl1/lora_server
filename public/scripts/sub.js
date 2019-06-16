@@ -1,3 +1,15 @@
+let curr_class = document.getElementById('current_class').innerText
+function ajax(url, method, payload, successCallback){
+    var xhr = new XMLHttpRequest()
+    xhr.open(method, url, true)
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
+    xhr.onreadystatechange = function () {
+    if (xhr.readyState != 4 || xhr.status != 200) return
+    successCallback(xhr.responseText)
+    }
+    xhr.send(JSON.stringify(payload))
+}
+
 
 function ajax_bob(){
     let req = new XMLHttpRequest()
@@ -49,16 +61,37 @@ function bobClicked(element){
 }
 
 function voteClicked(element){
+
+    ajax("/lora/voteCheck?cless="+curr_class,"GET",{},(data)=>{
+        data = JSON.parse(data)
+        if(data.flag==1){
+            let targetNode = document.getElementById("votingContainer")
+            document.getElementById("voteContainer").classList.add("displayNone")
+            targetNode.classList.add("displayInlineBlock")
+
+            childNode = targetNode.children[0]
+            childNode.children[1].innerText = "투표 안건: "+data.title
+            childNode.children[2].innerText = "발의자: "+data.name
+            childNode.children[3].innerText = "종료시간: "+data.time
+            childNode.children[4].innerText = "찬성: "+data.agree
+            childNode.children[5].innerText = "반대: "+data.disagree
+        }
+        else{
+          document.getElementById("voteContainer").classList.add("displayInlineBlock")
+          document.getElementById("votingContainer").classList.add("displayNone")
+        }
+
+      })
     if(element.dataset.flag=="t"){
         document.getElementById("voteContainer").style="left:13%;"
         document.getElementById("votingContainer").style="left:13%;"
-        document.getElementById('vote_container_li').innerHTML = '<button class = "button" onclick="voteClicked(this)" style="color:white;" data-flag="f">'+document.getElementById('current_class').innerText+'반 투표하기</button><'
+        document.getElementById('vote_container_li').innerHTML = '<button class = "button" onclick="voteClicked(this)" style="color:white;" data-flag="f">'+curr_class+'반 투표하기</button><'
         
     }
     else{
         document.getElementById("voteContainer").style="left:-30%"
         document.getElementById("votingContainer").style="left:-30%;"
-        document.getElementById('vote_container_li').innerHTML = '<button class = "button" onclick="voteClicked(this)" data-flag="t">'+document.getElementById('current_class').innerText+'반 투표하기</button>>'
+        document.getElementById('vote_container_li').innerHTML = '<button class = "button" onclick="voteClicked(this)" data-flag="t">'+curr_class+'반 투표하기</button>>'
     }
   }
 
@@ -86,8 +119,9 @@ function vote_submit(ip){
         return
     }
     let d =  Number(time) * 60000
+    let d_ = new Date(new Date().getTime()+d).toString().split(" ")[4]
     let req = new XMLHttpRequest()
-    req.open('GET', '/lora/voteStart?time='+d+'&title='+title+"&name="+name+"&ip="+ip+"&status=start&cless="+document.getElementById('current_class').innerText, true);
+    req.open('GET', '/lora/voteStart?time='+d+'&title='+title+"&name="+name+"&ip="+ip+"&status=start&cless="+curr_class+"&endtime="+d_, true)
         req.onreadystatechange = function (aEvt) {
             if (req.readyState === 4) {
                 if(req.status === 200){
@@ -103,6 +137,17 @@ function vote_submit(ip){
         }
     req.send(null)
 }
+
+function voting(result){
+    ajax_vote((ip)=>{
+        ajax("/lora/voteProgress?ip="+ip+"&cless="+curr_class+"&result="+result,"GET",{},(data)=>{
+            alert(data)
+            location.reload()
+            })
+        }
+    )
+}
+
 
 document.getElementById('buttonSubmit').addEventListener('click',()=>{
     let b = document.getElementById('selectClass');

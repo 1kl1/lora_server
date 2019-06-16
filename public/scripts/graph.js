@@ -201,17 +201,7 @@
   let curr_class = document.getElementById('current_class').innerText
   document.getElementsByClassName("button")[curr_class].style="color:white;"
   ajax("/lora/graph?class="+curr_class, "GET",{}, onFetchTempSuccess);
-  ajax("/lora/voteCheck?cless="+curr_class,"GET",{},(data)=>{
-    if(data=="1"){
-      document.getElementById("voteContainer").classList.add("displayNone")
-      document.getElementById("votingContainer").classList.add("displayInlineBlock")
-    }
-    else{
-      document.getElementById("voteContainer").classList.add("displayInlineBlock")
-      document.getElementById("votingContainer").classList.add("displayNone")
-      
-    }
-  })
+  
   channel = pusher.subscribe('class_'+curr_class)
   
   channel.bind('temperature', function(data) {
