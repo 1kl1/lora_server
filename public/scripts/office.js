@@ -1,4 +1,19 @@
 
+
+
+function bobClicked(element){
+    if(element.dataset.flag=="t"){
+        document.getElementById("bobContainer").style="left:13%;"
+        document.getElementById('bob_container_li').innerHTML = '<button class = "button" onclick="bobClicked(this)" data-flag="f">오늘의 급식</button><'
+    }
+    else{
+        document.getElementById("bobContainer").style="left:-30%"
+        document.getElementById('bob_container_li').innerHTML = '<button class = "button" onclick="bobClicked(this)" data-flag="t">오늘의 급식</button>>'
+    }
+}
+
+(   
+function(){
 function ajax_bob(){
     let req = new XMLHttpRequest()
     req.open('GET', '/lora/bob', true)
@@ -27,19 +42,6 @@ function ajax_bob(){
 
 ajax_bob()
 
-function bobClicked(element){
-    if(element.dataset.flag=="t"){
-        document.getElementById("bobContainer").style="left:13%;"
-        document.getElementById('bob_container_li').innerHTML = '<button class = "button" onclick="bobClicked(this)" data-flag="f">오늘의 급식</button><'
-    }
-    else{
-        document.getElementById("bobContainer").style="left:-30%"
-        document.getElementById('bob_container_li').innerHTML = '<button class = "button" onclick="bobClicked(this)" data-flag="t">오늘의 급식</button>>'
-    }
-}
-
-
-
 function putTable(index,data){
     if(index == data.length-1){
         
@@ -61,6 +63,37 @@ function putTable(index,data){
     return putTable(index+1,data)
     
 }
+function pushTable(cless,contents){
+
+    let n = document.getElementById('tableContent');
+    n.children[6].remove()
+    let a = document.createElement('tr');
+    let b = document.createElement('td');
+    let c = document.createElement('td');
+    b.setAttribute('class','text-left')
+    c.setAttribute('class','text-left')
+    b.innerText = contents
+    c.innerText = cless
+
+    a.appendChild(b)
+    a.appendChild(c)
+
+    n.insertBefore(a,n.childNodes[0])
+}
+
+
+let channel
+let pusher = new Pusher("5cb4216125572be7615d", {
+    cluster: "ap3",
+    encrypted: true
+})
+channel = pusher.subscribe('office')
+
+channel.bind('complain', function(data) {
+    var complainArray = data.data
+    pushTable(complainArray[0],complainArray[1])
+})
+
 var req = new XMLHttpRequest();
 req.open('GET', '/lora/complain?status=teacher', true);
 req.onreadystatechange = function (aEvt) {
@@ -82,26 +115,9 @@ if (req.readyState === 4) {
 };
 req.send(null);
 
-setInterval(()=>{
-    var req = new XMLHttpRequest();
-    req.open('GET', '/lora/complain?status=teacher', true);
-    req.onreadystatechange = function (aEvt) {
-    if (req.readyState === 4) {
-        if(req.status === 200){
-        
-            let response = JSON.parse("[" + req.response + "]")[0];
-            let myNode = document.getElementById("tableContent");
-            while (myNode.firstChild) {
-                myNode.removeChild(myNode.firstChild);
-            }
-            putTable(0,response);
-    
-        }
-        else{
-            console.log("Error loading page\n");
-        }
-    }
-    };
-    req.send(null);
+})()
+//IIFY Immediately Invoked Function Expressions 즉시 호출 함수 표현식 global 이 깔끔해짐.
 
-},5000)
+
+
+

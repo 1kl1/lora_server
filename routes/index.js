@@ -306,6 +306,9 @@ router.get('/complain',(req,res)=>{
       }
       else{
         res.end('성공적으로 잘 전송되었습니다.')
+        pusher.trigger('office', 'complain', {
+          data:param
+        })
       }
     })
   }

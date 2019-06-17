@@ -3,9 +3,9 @@
 
 
     let pusher = new Pusher("5cb4216125572be7615d", {
-          cluster: "ap3",
-          encrypted: true
-        })
+      cluster: "ap3",
+      encrypted: true
+    })
 
     function ajax(url, method, payload, successCallback){
       var xhr = new XMLHttpRequest()
