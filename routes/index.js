@@ -228,25 +228,25 @@ router.get('/get', (req, res) => {
             pusher.trigger('class_'+parsedobj.num, 'temperature', {
               dataPoint: {
                 temperature: parseFloat(parsedobj.temp),
-                time: yyyymmddhhmmss.substr(10,4)
+                time: yyyymmddhhmmss.substr(8,4)
               }
             })
             pusher.trigger('class_'+parsedobj.num, 'humidity', {
               dataPoint: {
                 temperature: parseFloat(parsedobj.humid),
-                time: yyyymmddhhmmss.substr(10,4)
+                time: yyyymmddhhmmss.substr(8,4)
               }
             })
             pusher.trigger('class_'+parsedobj.num, 'press', {
               dataPoint: {
                 temperature: parseFloat(parsedobj.pres),
-                time: yyyymmddhhmmss.substr(10,4)
+                time: yyyymmddhhmmss.substr(8,4)
               }
             })
             pusher.trigger('class_'+parsedobj.num, 'dust', {
               dataPoint: {
                 temperature: parseFloat(parsedobj.dust),
-                time: yyyymmddhhmmss.substr(10,4)
+                time: yyyymmddhhmmss.substr(8,4)
               }
             })
           }
@@ -295,10 +295,10 @@ router.get('/graph',(req,res)=>{
           }
         }
         results.forEach(element => {
-          finalJson.temperature.dataPoints.push({time:element.timeforme.substr(10,4),temperature:element.data_temp})
-          finalJson.humid.dataPoints.push({time:element.timeforme.substr(10,4),humid:element.data_humid})
-          finalJson.press.dataPoints.push({time:element.timeforme.substr(10,4),press:element.data_pres})
-          finalJson.dust.dataPoints.push({time:element.timeforme.substr(10,4),dust:element.data_dust})
+          finalJson.temperature.dataPoints.push({time:element.timeforme.substr(8,4),temperature:element.data_temp})
+          finalJson.humid.dataPoints.push({time:element.timeforme.substr(8,4),humid:element.data_humid})
+          finalJson.press.dataPoints.push({time:element.timeforme.substr(8,4),press:element.data_pres})
+          finalJson.dust.dataPoints.push({time:element.timeforme.substr(8,4),dust:element.data_dust})
         })
         finalJson.temperature.dataPoints.reverse()
         finalJson.humid.dataPoints.reverse()

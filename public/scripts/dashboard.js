@@ -183,13 +183,11 @@
           let targetArray = graphRef.data.datasets[k].data
           targetArray.push(targetArray[targetArray.length-1])
           clesses[index] = true
-          console.log("dd")
         }
       }
 
       let graphUpdateInterval = setInterval(()=>{
         if(clesses[0]||clesses[1]||clesses[2]||clesses[3]){
-          console.log("T")
           graphRef.update();
           clearInterval(graphUpdateInterval)
         }
