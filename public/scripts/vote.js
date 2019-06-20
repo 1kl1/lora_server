@@ -94,4 +94,14 @@ function voteTable(){
     req.send(null)
 }
 voteTable()
+
 })()
+
+function setOpacity(){
+    let status = document.getElementById("checkBox_opacity").checked
+    if(status){
+        document.getElementById("voteResultContainer").style = "opacity:0.2;"
+    }else{
+        document.getElementById("voteResultContainer").style = "opacity:1;"
+    }
+}

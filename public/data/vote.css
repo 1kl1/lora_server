@@ -142,6 +142,7 @@
   font-size: 22px;
   margin-top: 11px;
   margin-bottom: 16px;
+  display:inline-block;
 }
 
 #voteResult > tr >td {
@@ -153,4 +154,9 @@
   font-size:12px;
   text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
   border-right: 1px solid #C1C3D1;
+}
+.setOpacity{
+  display: inline-block;
+  float: right;
+  margin: 14px;
 }
