@@ -200,6 +200,7 @@ router.get('/voteStart',(req,res)=>{
         agree:0,
         disagree:0
       }
+      
     },parsedobj.time)
 
   }

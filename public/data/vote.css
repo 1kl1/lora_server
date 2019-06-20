@@ -140,6 +140,8 @@
 }
 .voteTitle{
   font-size: 22px;
+  margin-top: 11px;
+  margin-bottom: 16px;
 }
 
 #voteResult > tr >td {
