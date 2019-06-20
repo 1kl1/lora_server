@@ -4,9 +4,29 @@
     <meta charset="UTF-8">
     <title>LoRa Air Management</title>
     <link rel="stylesheet" href="data/style.css">
+    <link rel="stylesheet" href="data/vote.css">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
+    <div id="voteResultContainer" class = "card">
+        <div>
+            <p class = "voteTitle">투표 결과</p>
+            <table class="table-fill-vote">
+                <thead>
+                <tr>
+                    <th class="thSmall">반</th>
+                    <th class="thBig">안건</th>
+                    <th class="thSmall">결과</th>
+                    <th class="thSmall">인원</th>
+                    <th class="thBig">시간</th>
+                </tr>
+                </thead>
+                <tbody class="table-hover" id ='voteResult'>
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
     
     
     <div id="nav">
@@ -71,6 +91,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.min.js"></script>
 <script src="https://js.pusher.com/4.0/pusher.min.js"></script>
 <script src="scripts/dashboard.js"></script>
+<script src="scripts/vote.js"></script>
 </html>
 
 

@@ -65,7 +65,7 @@ function putTable(index,data){
 }
 function pushTable(cless,contents){
 
-    let n = document.getElementById('tableContent');
+    n = document.getElementById('tableContent');
     n.children[6].remove()
     let a = document.createElement('tr');
     let b = document.createElement('td');
@@ -79,7 +79,9 @@ function pushTable(cless,contents){
     a.appendChild(c)
 
     n.insertBefore(a,n.childNodes[0])
+    
 }
+
 
 
 let channel
@@ -94,26 +96,26 @@ channel.bind('complain', function(data) {
     pushTable(complainArray[0],complainArray[1])
 })
 
-var req = new XMLHttpRequest();
-req.open('GET', '/lora/complain?status=teacher', true);
-req.onreadystatechange = function (aEvt) {
-if (req.readyState === 4) {
-    if(req.status === 200){
-    
-        let response = JSON.parse("[" + req.response + "]")[0];
-        let myNode = document.getElementById("tableContent");
-        while (myNode.firstChild) {
-            myNode.removeChild(myNode.firstChild);
-        }
-        putTable(0,response);
+function complainTable(){
+    var req = new XMLHttpRequest();
+    req.open('GET', '/lora/complain?status=teacher', true);
+    req.onreadystatechange = function (aEvt) {
+    if (req.readyState === 4) {
+        if(req.status === 200){
+        
+            let response = JSON.parse("[" + req.response + "]")[0];
+            putTable(0,response);
 
+        }
+        else{
+            console.log("Error loading page\n");
+        }
     }
-    else{
-        console.log("Error loading page\n");
-    }
+    };
+    req.send(null);
 }
-};
-req.send(null);
+complainTable()
+
 
 })()
 //IIFY Immediately Invoked Function Expressions 즉시 호출 함수 표현식 global 이 깔끔해짐.

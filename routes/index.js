@@ -151,12 +151,51 @@ router.get('/voteStart',(req,res)=>{
     vote[classIndex].agree = 1
     
     setTimeout(()=>{
+      let agree_num = vote[classIndex].agree
+      let disagree_num = vote[classIndex].disagree
+      let d = new Date()
+      let dateTime = d.yyyymmdd()
+      dateTime = dateTime.substr(0,4)+"/"+dateTime.substr(4,2)+"/"+dateTime.substr(6,2) +" "+ d.toTimeString().split(':')[0]+":"+d.toTimeString().split(':')[1]
+      let param = [parsedobj.cless,parsedobj.title,"",0,dateTime]
+      if(agree_num>disagree_num){
+        param[2] = "찬성"
+        param[3] = agree_num
+        pusher.trigger("office","voteResult",{
+          data:[vote[classIndex].title,parsedobj.cless,agree_num+"명","찬성",dateTime]
+        })
+      }else if(agree_num == disagree_num){
+        param[2] = "동점"
+        param[3] = agree_num
+        pusher.trigger("office","voteResult",{
+          data:[vote[classIndex].title,parsedobj.cless,agree_num+"명","동점",dateTime]
+        })
+      }else{
+        param[2] = "반대"
+        param[3] = disagree_num
+        pusher.trigger("office","voteResult",{
+          data:[vote[classIndex].title,parsedobj.cless,disagree_num+"명","반대",dateTime]
+        })
+      }
+
+      let sqlquery = 'INSERT INTO `voteResult` (`cless`, `contents`,`result`,`people`,`time`) VALUES (?,?,?,?,?)'
+      connection.query(sqlquery,param, function (error, results, fields) {
+        if (error) {
+          console.log(error);
+        }
+        else{
+          res.end('성공적으로 잘 전송되었습니다.')
+          pusher.trigger('office', 'complain', {
+            data:param
+          })
+        }
+      })
+
       vote[classIndex] = {
         flag : 0,
         title:"",
         voters:[],
         name:"",
-        poeple : 0,
+        people : 0,
         time:"",
         agree:0,
         disagree:0
@@ -312,6 +351,21 @@ router.get('/complain',(req,res)=>{
       }
     })
   }
+})
+
+router.get('/voteResult',(req,res)=>{
+  parsedobj = req.query
+
+  let sqlquery = "SELECT * FROM `voteResult` ORDER BY idx DESC LIMIT 3"
+  connection.query(sqlquery, function (error, results, fields) {
+    if (error) {
+      console.log(error)
+    }
+    else{
+      res.send(results)
+      res.end('')
+    }
+  })
 })
 
 
