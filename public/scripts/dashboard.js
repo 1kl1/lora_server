@@ -168,7 +168,7 @@
       let newTempData = data.dataPoint
       let clesses = [false,false,false,false]
       clesses[index] = true
-      if(graphRef.data.labels.length > 15){
+      if(graphRef.data.labels.length > 50){
         graphRef.data.labels.shift()
         graphRef.data.datasets[0].data.shift()
         graphRef.data.datasets[1].data.shift()

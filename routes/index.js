@@ -265,7 +265,7 @@ router.get('/graph',(req,res)=>{
 
   if(cless != undefined){
     //let sqlquery = "SELECT * FROM `data` WHERE `data_num`="+cless+" AND `timeforme` LIKE ? ORDER BY idx DESC LIMIT 200"
-    let sqlquery = "SELECT * FROM `data` WHERE `data_num`="+cless+" ORDER BY idx DESC LIMIT 15"
+    let sqlquery = "SELECT * FROM `data` WHERE `data_num`="+cless+" ORDER BY idx DESC LIMIT 50"
 
     connection.query(sqlquery, function (error, results, fields) {
       if (error) {
@@ -308,6 +308,7 @@ router.get('/graph',(req,res)=>{
         
       }
     })
+
   }
 })
 
@@ -368,9 +369,6 @@ router.get('/voteResult',(req,res)=>{
     }
   })
 })
-
-
-
 
 
 module.exports = router

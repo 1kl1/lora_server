@@ -205,7 +205,7 @@
   
   channel.bind('temperature', function(data) {
     var newTempData = data.dataPoint;
-    if(temperatureGraphRef.data.labels.length > 15){
+    if(temperatureGraphRef.data.labels.length > 50){
       temperatureGraphRef.data.labels.shift();  
       temperatureGraphRef.data.datasets[0].data.shift();
     }
@@ -215,7 +215,7 @@
   });
   channel.bind('humidity', function(data) {
     var newTempData = data.dataPoint;
-    if(humidityGraphRef.data.labels.length > 15){
+    if(humidityGraphRef.data.labels.length > 50){
       humidityGraphRef.data.labels.shift();  
       humidityGraphRef.data.datasets[0].data.shift();
     }
@@ -225,7 +225,7 @@
   });
   channel.bind('press', function(data) {
     var newTempData = data.dataPoint;
-    if(pressGraphRef.data.labels.length > 15){
+    if(pressGraphRef.data.labels.length > 50){
       pressGraphRef.data.labels.shift();  
       pressGraphRef.data.datasets[0].data.shift();
     }
@@ -235,7 +235,7 @@
   });
   channel.bind('dust', function(data) {
     var newTempData = data.dataPoint;
-    if(dustGraphRef.data.labels.length > 15){
+    if(dustGraphRef.data.labels.length > 50){
       dustGraphRef.data.labels.shift();  
       dustGraphRef.data.datasets[0].data.shift();
     }
