@@ -158,6 +158,7 @@
     },200)
   
   let channels = [0,0,0,0]
+  let clesses = [false,false,false,false]
 
 
   for(i=1;i<5;i++){
@@ -166,8 +167,15 @@
 
     channels[index].bind('temperature', function(data) {
       let newTempData = data.dataPoint
-      let clesses = [false,false,false,false]
       clesses[index] = true
+      graphRef.data.labels.push(newTempData.time)
+      graphRef.data.datasets[index].data.push(newTempData.temperature)
+    })
+  }
+
+  setInterval(()=>{
+    if(clesses[0]||clesses[1]||clesses[2]||clesses[3]){
+      clesses = [false,false,false,false]
       if(graphRef.data.labels.length > 50){
         graphRef.data.labels.shift()
         graphRef.data.datasets[0].data.shift()
@@ -175,26 +183,9 @@
         graphRef.data.datasets[2].data.shift()
         graphRef.data.datasets[3].data.shift()
       }
-      graphRef.data.labels.push(newTempData.time)
-      graphRef.data.datasets[index].data.push(newTempData.temperature)
-     
-      for(k=0;k<4;k++){
-        if(!clesses[k]){
-          let targetArray = graphRef.data.datasets[k].data
-          targetArray.push(targetArray[targetArray.length-1])
-          clesses[index] = true
-        }
-      }
-
-      let graphUpdateInterval = setInterval(()=>{
-        if(clesses[0]||clesses[1]||clesses[2]||clesses[3]){
-          graphRef.update();
-          clearInterval(graphUpdateInterval)
-        }
-      },200)
-      
-    })
-  }
+      graphRef.update();
+    }
+  },1000)
 
 })();
 

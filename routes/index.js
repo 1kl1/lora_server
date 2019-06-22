@@ -382,21 +382,20 @@ router.get('/voteResult',(req,res)=>{
 })
 
 let pusherInterval = setInterval(()=>{
+  console.log(initFlag)
   if(initFlag[0]&&initFlag[1]&&initFlag[2]&&initFlag[3]){
-    setInterval(()=>{
-      console.log(array)
-      for( iterator = 1; iterator<5; iterator++){
-        let d = iterator-1
-        pusher.trigger('class_'+iterator,'temperature',array[d].temperature)
-        pusher.trigger('class_'+iterator,'humidity',array[d].humidity)
-        pusher.trigger('class_'+iterator,'press',array[d].press)
-        pusher.trigger('class_'+iterator,'dust',array[d].dust)
-      }
-    },6000)
+    initFlag = [false,false,false,false]
+    for( iterator = 1; iterator<5; iterator++){
+      let d = iterator-1
+      pusher.trigger('class_'+iterator,'temperature',array[d].temperature)
+      pusher.trigger('class_'+iterator,'humidity',array[d].humidity)
+      pusher.trigger('class_'+iterator,'press',array[d].press)
+      pusher.trigger('class_'+iterator,'dust',array[d].dust)
+    }
     clearInterval(pusherInterval)
   }
   
-},6000)
+},10000)
 
 
 module.exports = router
