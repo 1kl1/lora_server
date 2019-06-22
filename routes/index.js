@@ -28,6 +28,15 @@ let pusher = new Pusher({
   encrypted: true
 });
 
+
+let array = [
+  {temperature:{},humidity:{},dust:{},press:{}},
+  {temperature:{},humidity:{},dust:{},press:{}},
+  {temperature:{},humidity:{},dust:{},press:{}},
+  {temperature:{},humidity:{},dust:{},press:{}}
+]
+let initFlag = [false,false,false,false]
+
 let vote = [
   {
     flag : 0,
@@ -225,30 +234,32 @@ router.get('/get', (req, res) => {
             console.log(error)
           else{
             res.end('ACK')
-            pusher.trigger('class_'+parsedobj.num, 'temperature', {
+            let pm = Number(parsedobj.num)-1
+            initFlag[pm] = true
+            array[pm].temperature = {
               dataPoint: {
                 temperature: parseFloat(parsedobj.temp),
                 time: yyyymmddhhmmss.substr(8,4)
               }
-            })
-            pusher.trigger('class_'+parsedobj.num, 'humidity', {
+            }
+            array[pm].humidity = {
               dataPoint: {
                 temperature: parseFloat(parsedobj.humid),
                 time: yyyymmddhhmmss.substr(8,4)
               }
-            })
-            pusher.trigger('class_'+parsedobj.num, 'press', {
+            }
+            array[pm].press = {
               dataPoint: {
                 temperature: parseFloat(parsedobj.pres),
                 time: yyyymmddhhmmss.substr(8,4)
               }
-            })
-            pusher.trigger('class_'+parsedobj.num, 'dust', {
+            }
+            array[pm].dust = {
               dataPoint: {
                 temperature: parseFloat(parsedobj.dust),
                 time: yyyymmddhhmmss.substr(8,4)
               }
-            })
+            }
           }
         })
         }
@@ -370,5 +381,50 @@ router.get('/voteResult',(req,res)=>{
   })
 })
 
+let pusherInterval = setInterval(()=>{
+  if(initFlag[0]&&initFlag[1]&&initFlag[2]&&initFlag[3]){
+    setInterval(()=>{
+      console.log(array)
+      for( iterator = 1; iterator<5; iterator++){
+        let d = iterator-1
+        pusher.trigger('class_'+iterator,'temperature',array[d].temperature)
+        pusher.trigger('class_'+iterator,'humidity',array[d].humidity)
+        pusher.trigger('class_'+iterator,'press',array[d].press)
+        pusher.trigger('class_'+iterator,'dust',array[d].dust)
+      }
+    },6000)
+    clearInterval(pusherInterval)
+  }
+  
+},6000)
+
 
 module.exports = router
+
+
+
+
+// pusher.trigger('class_'+parsedobj.num, 'temperature', {
+//   dataPoint: {
+//     temperature: parseFloat(parsedobj.temp),
+//     time: yyyymmddhhmmss.substr(8,4)
+//   }
+// })
+// pusher.trigger('class_'+parsedobj.num, 'humidity', {
+//   dataPoint: {
+//     temperature: parseFloat(parsedobj.humid),
+//     time: yyyymmddhhmmss.substr(8,4)
+//   }
+// })
+// pusher.trigger('class_'+parsedobj.num, 'press', {
+//   dataPoint: {
+//     temperature: parseFloat(parsedobj.pres),
+//     time: yyyymmddhhmmss.substr(8,4)
+//   }
+// })
+// pusher.trigger('class_'+parsedobj.num, 'dust', {
+//   dataPoint: {
+//     temperature: parseFloat(parsedobj.dust),
+//     time: yyyymmddhhmmss.substr(8,4)
+//   }
+// })
