@@ -381,7 +381,7 @@ router.get('/voteResult',(req,res)=>{
   })
 })
 
-let pusherInterval = setInterval(()=>{
+setInterval(()=>{
   console.log(initFlag)
   if(initFlag[0]&&initFlag[1]&&initFlag[2]&&initFlag[3]){
     initFlag = [false,false,false,false]
