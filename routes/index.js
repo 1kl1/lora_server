@@ -392,7 +392,6 @@ let pusherInterval = setInterval(()=>{
       pusher.trigger('class_'+iterator,'press',array[d].press)
       pusher.trigger('class_'+iterator,'dust',array[d].dust)
     }
-    clearInterval(pusherInterval)
   }
   
 },10000)
